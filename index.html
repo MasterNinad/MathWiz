@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathWiz - Advanced Scientific Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">MathWiz</div>
+            <ul class="nav-links">
+                <li><a href="#basic">Basic</a></li>
+                <li><a href="#trig">Trigonometry</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Advanced Scientific Calculator</h1>
+                <p>Choose your calculator type below</p>
+                <div class="cta-buttons">
+                    <a href="#basic" class="cta-button">Basic Calculator</a>
+                    <a href="#trig" class="cta-button">Trigonometry</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="basic" class="calculator-section">
+            <h2>Basic Calculator</h2>
+            <div class="calculator-container basic-calc">
+                <div class="calculator">
+                    <div class="display">
+                        <input type="text" id="basic-result" readonly>
+                    </div>
+                    <div class="buttons" id="basic-buttons">
+                        <button class="btn" data-type="clear">C</button>
+                        <button class="btn" data-type="backspace">⌫</button>
+                        <button class="btn operator" data-type="operator">(</button>
+                        <button class="btn operator" data-type="operator">)</button>
+                        
+                        <button class="btn" data-type="number">7</button>
+                        <button class="btn" data-type="number">8</button>
+                        <button class="btn" data-type="number">9</button>
+                        <button class="btn operator" data-type="operator">÷</button>
+                        
+                        <button class="btn" data-type="number">4</button>
+                        <button class="btn" data-type="number">5</button>
+                        <button class="btn" data-type="number">6</button>
+                        <button class="btn operator" data-type="operator">×</button>
+                        
+                        <button class="btn" data-type="number">1</button>
+                        <button class="btn" data-type="number">2</button>
+                        <button class="btn" data-type="number">3</button>
+                        <button class="btn operator" data-type="operator">-</button>
+                        
+                        <button class="btn" data-type="number">0</button>
+                        <button class="btn" data-type="decimal">.</button>
+                        <button class="btn operator" data-type="equals">=</button>
+                        <button class="btn operator" data-type="operator">+</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trig" class="calculator-section">
+            <h2>Trigonometric Calculator</h2>
+            <div class="calculator-container trig-calc">
+                <div class="calculator">
+                    <div class="angle-input">
+                        <label for="angle">Enter Angle (degrees):</label>
+                        <input type="number" id="angle" placeholder="0">
+                    </div>
+                    <div class="trig-results">
+                        <div class="result-box">
+                            <label>sin(θ)</label>
+                            <input type="text" id="sin-result" readonly>
+                        </div>
+                        <div class="result-box">
+                            <label>cos(θ)</label>
+                            <input type="text" id="cos-result" readonly>
+                        </div>
+                        <div class="result-box">
+                            <label>tan(θ)</label>
+                            <input type="text" id="tan-result" readonly>
+                        </div>
+                        <div class="result-box">
+                            <label>cot(θ)</label>
+                            <input type="text" id="cot-result" readonly>
+                        </div>
+                        <div class="result-box">
+                            <label>sec(θ)</label>
+                            <input type="text" id="sec-result" readonly>
+                        </div>
+                        <div class="result-box">
+                            <label>cosec(θ)</label>
+                            <input type="text" id="cosec-result" readonly>
+                        </div>
+                    </div>
+                    <div class="angle-presets">
+                        <button class="preset-btn" data-angle="0">0°</button>
+                        <button class="preset-btn" data-angle="30">30°</button>
+                        <button class="preset-btn" data-angle="45">45°</button>
+                        <button class="preset-btn" data-angle="60">60°</button>
+                        <button class="preset-btn" data-angle="90">90°</button>
+                        <button class="preset-btn" data-angle="180">180°</button>
+                        <button class="preset-btn" data-angle="270">270°</button>
+                        <button class="preset-btn" data-angle="360">360°</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About MathWiz</h2>
+            <p>MathWiz offers two powerful calculators: a basic calculator for arithmetic operations and a comprehensive trigonometric calculator for all your angle calculations.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MathWiz. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

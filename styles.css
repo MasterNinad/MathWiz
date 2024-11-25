@@ -1,0 +1,321 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    --card-bg: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+/* Header and Navigation */
+header {
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #2563eb11 0%, #1e40af11 100%);
+    padding: 2rem;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #64748b;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Calculator Sections */
+.calculator-section {
+    padding: 5rem 2rem;
+    background-color: var(--card-bg);
+}
+
+.calculator-section:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+.calculator-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+}
+
+.calculator-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.calculator-container.trig-calc {
+    max-width: 600px;
+}
+
+.calculator {
+    background-color: #f1f5f9;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Basic Calculator Styles */
+.basic-calc .display {
+    margin-bottom: 1.5rem;
+}
+
+.basic-calc #basic-result {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    text-align: right;
+    border: none;
+    background-color: white;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.basic-calc .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.basic-calc .btn {
+    padding: 1rem;
+    font-size: 1.25rem;
+    border: none;
+    background-color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.basic-calc .btn:hover {
+    background-color: #e2e8f0;
+}
+
+.basic-calc .btn.operator {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.basic-calc .btn.operator:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Trigonometric Calculator Styles */
+.angle-input {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.angle-input label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.angle-input input {
+    width: 200px;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.angle-input input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.trig-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.result-box {
+    text-align: center;
+}
+
+.result-box label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.result-box input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.angle-presets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.preset-btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    background-color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    border: 2px solid #e2e8f0;
+}
+
+.preset-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* About Section */
+.about {
+    padding: 5rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about h2 {
+    margin-bottom: 2rem;
+}
+
+/* Footer */
+footer {
+    background-color: var(--card-bg);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .trig-results {
+        grid-template-columns: 1fr;
+    }
+
+    .angle-presets {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calculator {
+        padding: 1rem;
+    }
+
+    .basic-calc .btn {
+        padding: 0.75rem;
+        font-size: 1.1rem;
+    }
+}
