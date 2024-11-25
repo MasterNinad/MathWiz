@@ -73,7 +73,14 @@
             <div class="calculator-container trig-calc">
                 <div class="calculator">
                     <div class="angle-input">
-                        <label for="angle">Enter Angle (degrees):</label>
+                        <div class="unit-toggle">
+                            <label class="switch">
+                                <input type="checkbox" id="angle-unit">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="unit-label">DEG</span>
+                        </div>
+                        <label for="angle">Enter Angle:</label>
                         <input type="number" id="angle" placeholder="0">
                     </div>
                     <div class="trig-results">

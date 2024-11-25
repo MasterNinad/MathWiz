@@ -7,9 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Basic Calculator State
 let displayValue = '0';
-let firstOperand = null;
-let operator = null;
-let waitingForSecondOperand = false;
+let currentExpression = '';
+let waitingForOperand = false;
 
 // Basic Calculator Setup
 function setupBasicCalculator() {
@@ -59,13 +58,13 @@ function setupBasicCalculator() {
         } else if (event.key === '=' || event.key === 'Enter') {
             event.preventDefault();
             handleEquals();
-        } else if (event.key === 'Escape') {
+        } else if (event.key === 'Escape' || event.key === 'Delete') {
             event.preventDefault();
             clearDisplay();
         } else if (event.key === 'Backspace') {
             event.preventDefault();
             handleBackspace();
-        } else if (['+', '-', '*', '/'].includes(event.key)) {
+        } else if (['+', '-', '*', '/', '(', ')'].includes(event.key)) {
             event.preventDefault();
             handleOperator(convertOperator(event.key));
         }
@@ -73,81 +72,112 @@ function setupBasicCalculator() {
     });
 }
 
+// Convert keyboard operators to display operators
+function convertOperator(keyOperator) {
+    switch (keyOperator) {
+        case '/': return '÷';
+        case '*': return '×';
+        case '(': return '(';
+        case ')': return ')';
+        default: return keyOperator;
+    }
+}
+
 // Basic Calculator Functions
 function inputNumber(number) {
-    if (waitingForSecondOperand) {
+    if (waitingForOperand) {
         displayValue = number;
-        waitingForSecondOperand = false;
+        waitingForOperand = false;
     } else {
         displayValue = displayValue === '0' ? number : displayValue + number;
     }
+    currentExpression = displayValue;
 }
 
 function inputDecimal() {
-    if (waitingForSecondOperand) {
+    if (waitingForOperand) {
         displayValue = '0.';
-        waitingForSecondOperand = false;
-        return;
-    }
-    if (!displayValue.includes('.')) {
+        waitingForOperand = false;
+    } else if (!displayValue.includes('.')) {
         displayValue += '.';
     }
+    currentExpression = displayValue;
 }
 
 function handleOperator(nextOperator) {
-    const inputValue = parseFloat(displayValue);
-
-    if (operator && waitingForSecondOperand) {
-        operator = nextOperator;
+    // Handle parentheses
+    if (nextOperator === '(' || nextOperator === ')') {
+        if (displayValue === '0' && nextOperator === '(') {
+            currentExpression = nextOperator;
+        } else {
+            currentExpression += nextOperator;
+        }
+        displayValue = currentExpression;
         return;
     }
 
-    if (firstOperand === null && !isNaN(inputValue)) {
-        firstOperand = inputValue;
-    } else if (operator) {
-        const result = calculate(firstOperand, inputValue, operator);
-        displayValue = `${parseFloat(result.toFixed(7))}`;
-        firstOperand = result;
+    // Remove trailing operator if exists
+    if (['+', '-', '×', '÷'].includes(currentExpression.slice(-1))) {
+        currentExpression = currentExpression.slice(0, -1);
     }
 
-    waitingForSecondOperand = true;
-    operator = nextOperator;
-}
-
-function calculate(firstOperand, secondOperand, operator) {
-    switch (operator) {
-        case '+': return firstOperand + secondOperand;
-        case '-': return firstOperand - secondOperand;
-        case '×': return firstOperand * secondOperand;
-        case '÷': return firstOperand / secondOperand;
-        default: return secondOperand;
-    }
+    // Add the new operator
+    currentExpression += ` ${nextOperator} `;
+    displayValue = currentExpression;
+    waitingForOperand = false;
 }
 
 function handleEquals() {
-    if (!operator) return;
-    
-    const inputValue = parseFloat(displayValue);
-    const result = calculate(firstOperand, inputValue, operator);
-    displayValue = `${parseFloat(result.toFixed(7))}`;
-    firstOperand = result;
-    operator = null;
-    waitingForSecondOperand = true;
+    try {
+        // Replace × and ÷ with * and / for evaluation
+        let expression = currentExpression
+            .replace(/×/g, '*')
+            .replace(/÷/g, '/');
+        
+        // Evaluate the expression
+        const result = Function('"use strict";return (' + expression + ')')();
+        
+        // Format the result
+        displayValue = Number.isInteger(result) ? result.toString() : result.toFixed(8).replace(/\.?0+$/, '');
+        currentExpression = displayValue;
+        waitingForOperand = true;
+    } catch (error) {
+        displayValue = 'Error';
+        currentExpression = '';
+        waitingForOperand = true;
+    }
 }
 
 function clearDisplay() {
     displayValue = '0';
-    firstOperand = null;
-    operator = null;
-    waitingForSecondOperand = false;
+    currentExpression = '';
+    waitingForOperand = false;
+}
+
+function handleDelete() {
+    displayValue = '0';
+    currentExpression = '';
+    waitingForOperand = false;
 }
 
 function handleBackspace() {
-    if (displayValue.length === 1) {
+    if (displayValue === '0' || displayValue.length === 1) {
         displayValue = '0';
+        currentExpression = '';
     } else {
-        displayValue = displayValue.slice(0, -1);
+        // Check if we're deleting an operator (which has spaces around it)
+        const lastChar = currentExpression.trim().slice(-1);
+        if (['+', '-', '×', '÷', '(', ')'].includes(lastChar)) {
+            // Remove the operator and surrounding spaces
+            currentExpression = currentExpression.slice(0, -3).trim();
+        } else {
+            // Remove just the last character
+            currentExpression = currentExpression.slice(0, -1).trim();
+        }
+        displayValue = currentExpression || '0';
     }
+    waitingForOperand = false;
+    updateBasicDisplay();
 }
 
 function updateBasicDisplay() {
@@ -155,42 +185,58 @@ function updateBasicDisplay() {
     display.value = displayValue;
 }
 
-function convertOperator(keyOperator) {
-    switch (keyOperator) {
-        case '/': return '÷';
-        case '*': return '×';
-        default: return keyOperator;
-    }
-}
-
 // Trigonometric Calculator Setup
 function setupTrigCalculator() {
     const angleInput = document.getElementById('angle');
+    const angleUnit = document.getElementById('angle-unit');
+    const unitLabel = document.querySelector('.unit-label');
     const presetButtons = document.querySelectorAll('.preset-btn');
 
     // Listen for input changes
     angleInput.addEventListener('input', (e) => {
         const angle = parseFloat(e.target.value) || 0;
-        calculateTrig(angle);
+        calculateTrig(angle, !angleUnit.checked);
     });
 
-    // Listen for preset button clicks
+    // Listen for unit toggle changes
+    angleUnit.addEventListener('change', (e) => {
+        const angle = parseFloat(angleInput.value) || 0;
+        unitLabel.textContent = e.target.checked ? 'RAD' : 'DEG';
+        
+        // Convert the current value between degrees and radians
+        if (e.target.checked) {
+            // Converting from degrees to radians
+            angleInput.value = (angle * Math.PI / 180).toFixed(4);
+        } else {
+            // Converting from radians to degrees
+            angleInput.value = (angle * 180 / Math.PI).toFixed(4);
+        }
+        
+        calculateTrig(parseFloat(angleInput.value), !e.target.checked);
+    });
+
+    // Listen for preset button clicks (presets are always in degrees)
     presetButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const angle = parseFloat(button.dataset.angle);
-            angleInput.value = angle;
-            calculateTrig(angle);
+            const angleDeg = parseFloat(button.dataset.angle);
+            if (angleUnit.checked) {
+                // If in radians mode, convert the preset degree value to radians
+                angleInput.value = (angleDeg * Math.PI / 180).toFixed(4);
+            } else {
+                angleInput.value = angleDeg;
+            }
+            calculateTrig(parseFloat(angleInput.value), !angleUnit.checked);
         });
     });
 
-    // Initialize with 0 degrees
-    calculateTrig(0);
+    // Initialize with 0
+    calculateTrig(0, true);
 }
 
 // Calculate Trigonometric Values
-function calculateTrig(angle) {
-    // Convert angle to radians for calculation
-    const radians = angle * Math.PI / 180;
+function calculateTrig(angle, isDegrees) {
+    // Convert to radians if input is in degrees
+    const radians = isDegrees ? angle * Math.PI / 180 : angle;
     
     // Calculate primary functions
     const sinValue = Math.sin(radians);
