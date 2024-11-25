@@ -1,9 +1,12 @@
+/* Base styles */
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #1e40af;
-    --background-color: #f8fafc;
-    --text-color: #1e293b;
-    --card-bg: #ffffff;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -15,8 +18,14 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--text-color);
     background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 /* Header and Navigation */
@@ -61,68 +70,186 @@ nav {
     color: var(--primary-color);
 }
 
+/* Navigation Menu */
+.nav-menu {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
 /* Hero Section */
 .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 4rem 0;
     text-align: center;
-    background: linear-gradient(135deg, #2563eb11 0%, #1e40af11 100%);
-    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: var(--text-color);
 }
 
-.hero p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    color: #64748b;
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
 }
 
-.cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+/* Calculator Cards */
+.calculator-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
 }
 
-.cta-button {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background-color: var(--primary-color);
-    color: white;
+.calc-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
     text-decoration: none;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+    color: var(--text-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
-.cta-button:hover {
-    background-color: var(--secondary-color);
+.calc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px var(--shadow-color);
+}
+
+.calc-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.calc-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.calc-card p {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.calc-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.calc-card li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.calc-card li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}
+
+/* Features Section */
+.features {
+    padding: 4rem 0;
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    color: var(--primary-color);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: transform 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.feature-item i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.feature-item p {
+    color: var(--secondary-color);
 }
 
 /* Calculator Sections */
 .calculator-section {
-    padding: 5rem 2rem;
-    background-color: var(--card-bg);
-}
-
-.calculator-section:nth-child(even) {
-    background-color: var(--background-color);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
 .calculator-section h2 {
     text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.calculator-section:nth-child(even) {
+    background-color: var(--background-color);
 }
 
 .calculator-container {
@@ -357,24 +484,41 @@ input:checked + .slider:before {
 
 /* Footer */
 footer {
-    background-color: var(--card-bg);
     text-align: center;
-    padding: 2rem;
-    margin-top: 2rem;
+    padding: 2rem 0;
+    color: var(--secondary-color);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+
+    .calculator-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
         font-size: 2rem;
     }
 
-    .cta-buttons {
-        flex-direction: column;
+    .hero-subtitle {
+        font-size: 1.1rem;
     }
 
-    .nav-links {
-        display: none;
+    .calc-card {
+        padding: 1.5rem;
     }
 
     .trig-results {
@@ -392,5 +536,20 @@ footer {
     .basic-calc .btn {
         padding: 0.75rem;
         font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .angle-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .unit-toggle {
+        justify-content: center;
+    }
+
+    .angle-presets {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

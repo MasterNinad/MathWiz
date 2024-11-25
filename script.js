@@ -1,188 +1,258 @@
-// Initialize Calculators
-document.addEventListener('DOMContentLoaded', () => {
-    setupBasicCalculator();
-    setupTrigCalculator();
-    setupSmoothScroll();
-});
+// Calculator State and Constants
+const OPERATORS = {
+    '+': '+',
+    '-': '-',
+    '*': '×',
+    '/': '÷',
+    '(': '(',
+    ')': ')'
+};
 
-// Basic Calculator State
-let displayValue = '0';
-let currentExpression = '';
-let waitingForOperand = false;
+const CALCULATOR_STATE = {
+    displayValue: '0',
+    currentExpression: '',
+    waitingForOperand: false
+};
+
+// Initialize the appropriate calculator based on the page
+document.addEventListener('DOMContentLoaded', () => {
+    // Check which calculator to initialize based on the page
+    const basicCalc = document.querySelector('.basic-calc');
+    const trigCalc = document.querySelector('.trig-calc');
+
+    if (basicCalc) {
+        setupBasicCalculator();
+    }
+
+    if (trigCalc) {
+        setupTrigCalculator();
+    }
+});
 
 // Basic Calculator Setup
 function setupBasicCalculator() {
     const calculator = document.querySelector('.basic-calc');
     const display = document.getElementById('basic-result');
-    display.value = displayValue;
+    updateDisplay();
 
-    calculator.addEventListener('click', (event) => {
-        if (!event.target.matches('button')) return;
-        
-        const button = event.target;
-        const { type } = button.dataset;
-        const buttonValue = button.textContent;
-
-        switch(type) {
-            case 'number':
-                inputNumber(buttonValue);
-                break;
-            case 'operator':
-                handleOperator(buttonValue);
-                break;
-            case 'decimal':
-                inputDecimal();
-                break;
-            case 'equals':
-                handleEquals();
-                break;
-            case 'clear':
-                clearDisplay();
-                break;
-            case 'backspace':
-                handleBackspace();
-                break;
-        }
-        
-        updateBasicDisplay();
-    });
-
-    // Keyboard support
+    // Button click handler
+    calculator.addEventListener('click', handleCalculatorClick);
+    
+    // Keyboard support - only when basic calculator is focused
     document.addEventListener('keydown', (event) => {
-        if (event.key >= '0' && event.key <= '9') {
-            event.preventDefault();
-            inputNumber(event.key);
-        } else if (event.key === '.') {
-            event.preventDefault();
-            inputDecimal();
-        } else if (event.key === '=' || event.key === 'Enter') {
-            event.preventDefault();
-            handleEquals();
-        } else if (event.key === 'Escape' || event.key === 'Delete') {
-            event.preventDefault();
-            clearDisplay();
-        } else if (event.key === 'Backspace') {
-            event.preventDefault();
-            handleBackspace();
-        } else if (['+', '-', '*', '/', '(', ')'].includes(event.key)) {
-            event.preventDefault();
-            handleOperator(convertOperator(event.key));
+        const basicResult = document.getElementById('basic-result');
+        // Only handle keyboard input if basic calculator display is focused
+        if (document.activeElement !== basicResult) return;
+
+        const key = event.key;
+        let type = '', value = '';
+
+        if (key >= '0' && key <= '9') {
+            type = 'number';
+            value = key;
+        } else if (key === '.') {
+            type = 'decimal';
+            value = key;
+        } else if (key === '=' || key === 'Enter') {
+            type = 'equals';
+            value = '=';
+        } else if (key === 'Escape' || key === 'Delete') {
+            type = 'clear';
+            value = 'C';
+        } else if (key === 'Backspace') {
+            type = 'backspace';
+            value = '⌫';
+        } else if (Object.keys(OPERATORS).includes(key)) {
+            type = 'operator';
+            value = OPERATORS[key];
+        } else {
+            return;
         }
-        updateBasicDisplay();
+
+        event.preventDefault();
+        handleInput(type, value);
     });
 }
 
-// Convert keyboard operators to display operators
-function convertOperator(keyOperator) {
-    switch (keyOperator) {
-        case '/': return '÷';
-        case '*': return '×';
-        case '(': return '(';
-        case ')': return ')';
-        default: return keyOperator;
-    }
+// Event Handlers
+function handleCalculatorClick(event) {
+    if (!event.target.matches('button')) return;
+    
+    const button = event.target;
+    const { type } = button.dataset;
+    const value = button.textContent;
+
+    handleInput(type, value);
 }
 
-// Basic Calculator Functions
-function inputNumber(number) {
-    if (waitingForOperand) {
-        displayValue = number;
-        waitingForOperand = false;
+function handleKeyboardInput(event) {
+    const key = event.key;
+    let type = '', value = '';
+
+    if (key >= '0' && key <= '9') {
+        type = 'number';
+        value = key;
+    } else if (key === '.') {
+        type = 'decimal';
+        value = key;
+    } else if (key === '=' || key === 'Enter') {
+        type = 'equals';
+        value = '=';
+    } else if (key === 'Escape' || key === 'Delete') {
+        type = 'clear';
+        value = 'C';
+    } else if (key === 'Backspace') {
+        type = 'backspace';
+        value = '⌫';
+    } else if (Object.keys(OPERATORS).includes(key)) {
+        type = 'operator';
+        value = OPERATORS[key];
     } else {
-        displayValue = displayValue === '0' ? number : displayValue + number;
+        return;
     }
-    currentExpression = displayValue;
+
+    event.preventDefault();
+    handleInput(type, value);
+}
+
+// Input Handler
+function handleInput(type, value) {
+    switch(type) {
+        case 'number':
+            inputNumber(value);
+            break;
+        case 'operator':
+            handleOperator(value);
+            break;
+        case 'decimal':
+            inputDecimal();
+            break;
+        case 'equals':
+            handleEquals();
+            break;
+        case 'clear':
+            clearDisplay();
+            break;
+        case 'backspace':
+            handleBackspace();
+            break;
+    }
+    
+    updateDisplay();
+}
+
+// Calculator Functions
+function inputNumber(number) {
+    const { displayValue, waitingForOperand } = CALCULATOR_STATE;
+    
+    if (waitingForOperand) {
+        CALCULATOR_STATE.displayValue = number;
+        CALCULATOR_STATE.waitingForOperand = false;
+    } else {
+        CALCULATOR_STATE.displayValue = displayValue === '0' ? number : displayValue + number;
+    }
+    CALCULATOR_STATE.currentExpression = CALCULATOR_STATE.displayValue;
 }
 
 function inputDecimal() {
-    if (waitingForOperand) {
-        displayValue = '0.';
-        waitingForOperand = false;
-    } else if (!displayValue.includes('.')) {
-        displayValue += '.';
+    const { currentExpression, waitingForOperand, displayValue } = CALCULATOR_STATE;
+    const parts = currentExpression.split(' ');
+    const lastPart = parts[parts.length - 1];
+
+    if (waitingForOperand || displayValue === '0') {
+        CALCULATOR_STATE.currentExpression = currentExpression === '0' ? '0.' : currentExpression + '0.';
+        CALCULATOR_STATE.displayValue = CALCULATOR_STATE.currentExpression;
+        CALCULATOR_STATE.waitingForOperand = false;
+        return;
     }
-    currentExpression = displayValue;
+
+    if (isOperator(lastPart) || lastPart.includes('.')) return;
+
+    CALCULATOR_STATE.currentExpression += '.';
+    CALCULATOR_STATE.displayValue = CALCULATOR_STATE.currentExpression;
+    CALCULATOR_STATE.waitingForOperand = false;
 }
 
-function handleOperator(nextOperator) {
-    // Handle parentheses
-    if (nextOperator === '(' || nextOperator === ')') {
-        if (displayValue === '0' && nextOperator === '(') {
-            currentExpression = nextOperator;
+function handleOperator(operator) {
+    const { currentExpression } = CALCULATOR_STATE;
+
+    if (operator === '(' || operator === ')') {
+        if (CALCULATOR_STATE.displayValue === '0' && operator === '(') {
+            CALCULATOR_STATE.currentExpression = operator;
         } else {
-            currentExpression += nextOperator;
+            CALCULATOR_STATE.currentExpression += operator;
         }
-        displayValue = currentExpression;
+        CALCULATOR_STATE.displayValue = CALCULATOR_STATE.currentExpression;
         return;
     }
 
     // Remove trailing operator if exists
-    if (['+', '-', '×', '÷'].includes(currentExpression.slice(-1))) {
-        currentExpression = currentExpression.slice(0, -1);
+    if (isOperator(currentExpression.trim().slice(-1))) {
+        CALCULATOR_STATE.currentExpression = currentExpression.trim().slice(0, -3);
     }
 
-    // Add the new operator
-    currentExpression += ` ${nextOperator} `;
-    displayValue = currentExpression;
-    waitingForOperand = false;
+    CALCULATOR_STATE.currentExpression += ` ${operator} `;
+    CALCULATOR_STATE.displayValue = CALCULATOR_STATE.currentExpression;
+    CALCULATOR_STATE.waitingForOperand = false;
 }
 
 function handleEquals() {
     try {
-        // Replace × and ÷ with * and / for evaluation
-        let expression = currentExpression
+        const expression = CALCULATOR_STATE.currentExpression
             .replace(/×/g, '*')
             .replace(/÷/g, '/');
         
-        // Evaluate the expression
         const result = Function('"use strict";return (' + expression + ')')();
-        
-        // Format the result
-        displayValue = Number.isInteger(result) ? result.toString() : result.toFixed(8).replace(/\.?0+$/, '');
-        currentExpression = displayValue;
-        waitingForOperand = true;
+        CALCULATOR_STATE.displayValue = formatResult(result);
+        CALCULATOR_STATE.currentExpression = CALCULATOR_STATE.displayValue;
+        CALCULATOR_STATE.waitingForOperand = true;
     } catch (error) {
-        displayValue = 'Error';
-        currentExpression = '';
-        waitingForOperand = true;
+        CALCULATOR_STATE.displayValue = 'Error';
+        CALCULATOR_STATE.currentExpression = '';
+        CALCULATOR_STATE.waitingForOperand = true;
     }
-}
-
-function clearDisplay() {
-    displayValue = '0';
-    currentExpression = '';
-    waitingForOperand = false;
-}
-
-function handleDelete() {
-    displayValue = '0';
-    currentExpression = '';
-    waitingForOperand = false;
 }
 
 function handleBackspace() {
+    const { displayValue, currentExpression } = CALCULATOR_STATE;
+
     if (displayValue === '0' || displayValue.length === 1) {
-        displayValue = '0';
-        currentExpression = '';
-    } else {
-        // Check if we're deleting an operator (which has spaces around it)
-        const lastChar = currentExpression.trim().slice(-1);
-        if (['+', '-', '×', '÷', '(', ')'].includes(lastChar)) {
-            // Remove the operator and surrounding spaces
-            currentExpression = currentExpression.slice(0, -3).trim();
-        } else {
-            // Remove just the last character
-            currentExpression = currentExpression.slice(0, -1).trim();
-        }
-        displayValue = currentExpression || '0';
+        resetCalculator();
+        return;
     }
-    waitingForOperand = false;
-    updateBasicDisplay();
+
+    const lastChar = currentExpression.trim().slice(-1);
+    if (isOperator(lastChar)) {
+        CALCULATOR_STATE.currentExpression = currentExpression.slice(0, -3).trim();
+    } else {
+        CALCULATOR_STATE.currentExpression = currentExpression.slice(0, -1).trim();
+    }
+    
+    CALCULATOR_STATE.displayValue = CALCULATOR_STATE.currentExpression || '0';
+    CALCULATOR_STATE.waitingForOperand = false;
 }
 
-function updateBasicDisplay() {
-    const display = document.getElementById('basic-result');
-    display.value = displayValue;
+// Utility Functions
+function isOperator(char) {
+    return Object.values(OPERATORS).includes(char);
+}
+
+function formatResult(result) {
+    return Number.isInteger(result) ? result.toString() : result.toFixed(8).replace(/\.?0+$/, '');
+}
+
+function resetCalculator() {
+    CALCULATOR_STATE.displayValue = '0';
+    CALCULATOR_STATE.currentExpression = '';
+    CALCULATOR_STATE.waitingForOperand = false;
+}
+
+function clearDisplay() {
+    resetCalculator();
+}
+
+function updateDisplay() {
+    document.getElementById('basic-result').value = CALCULATOR_STATE.displayValue;
 }
 
 // Trigonometric Calculator Setup
@@ -191,6 +261,9 @@ function setupTrigCalculator() {
     const angleUnit = document.getElementById('angle-unit');
     const unitLabel = document.querySelector('.unit-label');
     const presetButtons = document.querySelectorAll('.preset-btn');
+
+    // Add keyboard support for trigonometric calculator
+    angleInput.addEventListener('keydown', handleTrigKeyboard);
 
     // Listen for input changes
     angleInput.addEventListener('input', (e) => {
@@ -203,25 +276,21 @@ function setupTrigCalculator() {
         const angle = parseFloat(angleInput.value) || 0;
         unitLabel.textContent = e.target.checked ? 'RAD' : 'DEG';
         
-        // Convert the current value between degrees and radians
         if (e.target.checked) {
-            // Converting from degrees to radians
-            angleInput.value = (angle * Math.PI / 180).toFixed(4);
+            angleInput.value = formatResult(angle * Math.PI / 180);
         } else {
-            // Converting from radians to degrees
-            angleInput.value = (angle * 180 / Math.PI).toFixed(4);
+            angleInput.value = formatResult(angle * 180 / Math.PI);
         }
         
         calculateTrig(parseFloat(angleInput.value), !e.target.checked);
     });
 
-    // Listen for preset button clicks (presets are always in degrees)
+    // Listen for preset button clicks
     presetButtons.forEach(button => {
         button.addEventListener('click', () => {
             const angleDeg = parseFloat(button.dataset.angle);
             if (angleUnit.checked) {
-                // If in radians mode, convert the preset degree value to radians
-                angleInput.value = (angleDeg * Math.PI / 180).toFixed(4);
+                angleInput.value = formatResult(angleDeg * Math.PI / 180);
             } else {
                 angleInput.value = angleDeg;
             }
@@ -229,8 +298,75 @@ function setupTrigCalculator() {
         });
     });
 
+    // Add keyboard shortcuts for unit toggle
+    document.addEventListener('keydown', (event) => {
+        if (document.activeElement === angleInput) {
+            if (event.key.toLowerCase() === 'd') {
+                event.preventDefault();
+                angleUnit.checked = false;
+                angleUnit.dispatchEvent(new Event('change'));
+            } else if (event.key.toLowerCase() === 'r') {
+                event.preventDefault();
+                angleUnit.checked = true;
+                angleUnit.dispatchEvent(new Event('change'));
+            }
+        }
+    });
+
     // Initialize with 0
     calculateTrig(0, true);
+}
+
+// Handle keyboard input for trigonometric calculator
+function handleTrigKeyboard(event) {
+    const key = event.key;
+    const input = event.target;
+    const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    
+    // Handle keyboard shortcuts
+    if (event.ctrlKey || event.metaKey) {
+        if (['c', 'x', 'v'].includes(key.toLowerCase())) {
+            return;
+        }
+    }
+
+    // Handle negative numbers
+    if (key === '-') {
+        if (input.selectionStart === 0 && !input.value.includes('-')) {
+            return;
+        }
+        event.preventDefault();
+        return;
+    }
+
+    // Block any other keys
+    if (!allowedKeys.includes(key)) {
+        event.preventDefault();
+        return;
+    }
+
+    // Handle decimal point
+    if (key === '.') {
+        if (input.value.includes('.')) {
+            event.preventDefault();
+            return;
+        }
+    }
+
+    // Handle delete and backspace
+    if (key === 'Delete' || key === 'Backspace') {
+        setTimeout(() => {
+            const newValue = parseFloat(input.value) || 0;
+            calculateTrig(newValue, !document.getElementById('angle-unit').checked);
+        }, 0);
+        return;
+    }
+
+    // After any valid key press, calculate new value
+    setTimeout(() => {
+        const newValue = parseFloat(input.value) || 0;
+        calculateTrig(newValue, !document.getElementById('angle-unit').checked);
+    }, 0);
 }
 
 // Calculate Trigonometric Values
@@ -248,19 +384,23 @@ function calculateTrig(angle, isDegrees) {
     const secValue = 1 / cosValue;
     const cosecValue = 1 / sinValue;
 
-    // Format values to 6 decimal places
-    const formatValue = (value) => {
-        if (isNaN(value) || !isFinite(value)) return 'undefined';
-        return value.toFixed(6);
-    };
+    // Update display with formatted values
+    updateTrigDisplay('sin-result', sinValue);
+    updateTrigDisplay('cos-result', cosValue);
+    updateTrigDisplay('tan-result', tanValue);
+    updateTrigDisplay('cot-result', cotValue);
+    updateTrigDisplay('sec-result', secValue);
+    updateTrigDisplay('cosec-result', cosecValue);
+}
 
-    // Update display
-    document.getElementById('sin-result').value = formatValue(sinValue);
-    document.getElementById('cos-result').value = formatValue(cosValue);
-    document.getElementById('tan-result').value = formatValue(tanValue);
-    document.getElementById('cot-result').value = formatValue(cotValue);
-    document.getElementById('sec-result').value = formatValue(secValue);
-    document.getElementById('cosec-result').value = formatValue(cosecValue);
+// Update trigonometric display with formatted value
+function updateTrigDisplay(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (isNaN(value) || !isFinite(value)) {
+        element.value = 'undefined';
+    } else {
+        element.value = formatResult(value);
+    }
 }
 
 // Smooth Scrolling
