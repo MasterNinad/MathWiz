@@ -17,77 +17,84 @@
             <a href="unit.html" class="nav-link">Unit Converter</a>
         </nav>
 
-        <main class="calculator-container">
-            <div class="matrix-calculator card">
+        <main>
+            <section class="calculator-section">
                 <h2>Matrix Calculator</h2>
-                
-                <!-- Matrix Operation Selection -->
-                <div class="matrix-operations">
-                    <button class="btn operation-btn active" data-operation="add">
-                        <i class="fas fa-plus"></i> Addition
-                    </button>
-                    <button class="btn operation-btn" data-operation="subtract">
-                        <i class="fas fa-minus"></i> Subtraction
-                    </button>
-                    <button class="btn operation-btn" data-operation="multiply">
-                        <i class="fas fa-times"></i> Multiplication
-                    </button>
-                    <button class="btn operation-btn" data-operation="determinant">
-                        <i class="fas fa-calculator"></i> Determinant
-                    </button>
-                    <button class="btn operation-btn" data-operation="inverse">
-                        <i class="fas fa-sync-alt"></i> Inverse
-                    </button>
-                    <button class="btn operation-btn" data-operation="transpose">
-                        <i class="fas fa-exchange-alt"></i> Transpose
-                    </button>
-                </div>
+                <div class="calculator-container">
+                    <div class="matrix-calculator card">
+                        <!-- Matrix Operation Selection -->
+                        <div class="matrix-operations">
+                            <button class="btn operation-btn active" data-operation="add">
+                                <i class="fas fa-plus"></i> Addition
+                            </button>
+                            <button class="btn operation-btn" data-operation="subtract">
+                                <i class="fas fa-minus"></i> Subtraction
+                            </button>
+                            <button class="btn operation-btn" data-operation="multiply">
+                                <i class="fas fa-times"></i> Multiplication
+                            </button>
+                            <button class="btn operation-btn" data-operation="determinant">
+                                <i class="fas fa-calculator"></i> Determinant
+                            </button>
+                            <button class="btn operation-btn" data-operation="inverse">
+                                <i class="fas fa-sync-alt"></i> Inverse
+                            </button>
+                            <button class="btn operation-btn" data-operation="transpose">
+                                <i class="fas fa-exchange-alt"></i> Transpose
+                            </button>
+                        </div>
 
-                <!-- Matrix Size Controls -->
-                <div class="matrix-size-controls">
-                    <div class="matrix-a-size">
-                        <label>Matrix A Size:</label>
-                        <div class="size-inputs">
-                            <input type="number" id="matrix-a-rows" min="1" max="5" value="2" placeholder="Rows">
-                            <span>×</span>
-                            <input type="number" id="matrix-a-cols" min="1" max="5" value="2" placeholder="Columns">
+                        <!-- Matrix Size Controls -->
+                        <div class="matrix-size-controls">
+                            <div class="matrix-a-size">
+                                <label>Matrix A Size:</label>
+                                <div class="size-inputs">
+                                    <input type="number" id="matrix-a-rows" min="1" max="5" value="2" placeholder="Rows">
+                                    <span>×</span>
+                                    <input type="number" id="matrix-a-cols" min="1" max="5" value="2" placeholder="Columns">
+                                </div>
+                            </div>
+                            <div class="matrix-b-size">
+                                <label>Matrix B Size:</label>
+                                <div class="size-inputs">
+                                    <input type="number" id="matrix-b-rows" min="1" max="5" value="2" placeholder="Rows">
+                                    <span>×</span>
+                                    <input type="number" id="matrix-b-cols" min="1" max="5" value="2" placeholder="Columns">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Matrix Input Section -->
+                        <div class="matrix-input-section">
+                            <div class="matrix-input matrix-a">
+                                <h3>Matrix A</h3>
+                                <div class="matrix-grid" id="matrix-a-grid"></div>
+                            </div>
+                            <div class="operation-symbol">+</div>
+                            <div class="matrix-input matrix-b">
+                                <h3>Matrix B</h3>
+                                <div class="matrix-grid" id="matrix-b-grid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <button class="btn calculate-btn" id="calculate-matrix">
+                            <i class="fas fa-equals"></i> Calculate
+                        </button>
+
+                        <!-- Result Section -->
+                        <div class="matrix-result">
+                            <h3>Result</h3>
+                            <div class="matrix-grid" id="result-grid"></div>
                         </div>
                     </div>
-                    <div class="matrix-b-size">
-                        <label>Matrix B Size:</label>
-                        <div class="size-inputs">
-                            <input type="number" id="matrix-b-rows" min="1" max="5" value="2" placeholder="Rows">
-                            <span>×</span>
-                            <input type="number" id="matrix-b-cols" min="1" max="5" value="2" placeholder="Columns">
-                        </div>
-                    </div>
                 </div>
-
-                <!-- Matrix Input Section -->
-                <div class="matrix-input-section">
-                    <div class="matrix-input matrix-a">
-                        <h3>Matrix A</h3>
-                        <div class="matrix-grid" id="matrix-a-grid"></div>
-                    </div>
-                    <div class="operation-symbol">+</div>
-                    <div class="matrix-input matrix-b">
-                        <h3>Matrix B</h3>
-                        <div class="matrix-grid" id="matrix-b-grid"></div>
-                    </div>
-                </div>
-
-                <!-- Calculate Button -->
-                <button class="btn calculate-btn" id="calculate-matrix">
-                    <i class="fas fa-equals"></i> Calculate
-                </button>
-
-                <!-- Result Section -->
-                <div class="matrix-result">
-                    <h3>Result</h3>
-                    <div class="matrix-grid" id="result-grid"></div>
-                </div>
-            </div>
+            </section>
         </main>
+
+        <footer>
+            <p>&copy; 2024 MathWiz Calculator. All rights reserved.</p>
+        </footer>
     </div>
 
     <script src="js/matrix.js"></script>

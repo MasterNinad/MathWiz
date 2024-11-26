@@ -270,9 +270,21 @@ const unitTypes = {
     temperature: {
         name: 'Temperature',
         units: {
-            C: { name: 'Celsius', toBase: x => x },
-            F: { name: 'Fahrenheit', toBase: x => (x - 32) * 5/9 },
-            K: { name: 'Kelvin', toBase: x => x - 273.15 }
+            C: { 
+                name: 'Celsius', 
+                toBase: x => x,
+                fromBase: x => x 
+            },
+            F: { 
+                name: 'Fahrenheit', 
+                toBase: x => (x - 32) * 5/9,
+                fromBase: x => (x * 9/5) + 32 
+            },
+            K: { 
+                name: 'Kelvin', 
+                toBase: x => x - 273.15,
+                fromBase: x => x + 273.15 
+            }
         },
         baseUnit: 'C',
         presetConversions: [
