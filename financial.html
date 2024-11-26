@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Calculator - MathWiz</title>
+    <title>MathWiz - Financial Calculator</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -19,67 +19,71 @@
         <main>
             <section class="calculator-section">
                 <h2>Financial Calculator</h2>
-                <div class="financial-calc">
-                    <div class="interest-type-toggle">
-                        <button class="toggle-btn active" data-type="simple">Simple Interest</button>
-                        <button class="toggle-btn" data-type="compound">Compound Interest</button>
-                    </div>
-
-                    <div class="financial-inputs">
-                        <div class="input-group">
-                            <label for="principal">Principal Amount</label>
-                            <div class="input-wrapper">
-                                <div class="currency-symbol">₹</div>
-                                <input type="text" inputmode="numeric" id="principal" placeholder="Enter principal amount">
+                <div class="calculator-container">
+                    <div class="calculator-wrapper">
+                        <div class="calculator financial-calc">
+                            <div class="interest-type-toggle">
+                                <button class="toggle-btn active" data-type="simple">Simple Interest</button>
+                                <button class="toggle-btn" data-type="compound">Compound Interest</button>
                             </div>
-                        </div>
 
-                        <div class="input-group">
-                            <label for="rate">Interest Rate (%)</label>
-                            <input type="number" id="rate" placeholder="Enter interest rate" min="0" max="100" step="0.1">
-                        </div>
+                            <div class="financial-inputs">
+                                <div class="input-group">
+                                    <label for="principal">Principal Amount</label>
+                                    <div class="input-wrapper">
+                                        <div class="currency-symbol">₹</div>
+                                        <input type="text" inputmode="numeric" id="principal" placeholder="Enter principal amount">
+                                    </div>
+                                </div>
 
-                        <div class="input-group">
-                            <label for="time">Time Period</label>
-                            <div class="time-input">
-                                <input type="text" inputmode="decimal" id="time" placeholder="Enter time period">
-                                <select id="time-unit">
-                                    <option value="years">Years</option>
-                                    <option value="months">Months</option>
-                                </select>
+                                <div class="input-group">
+                                    <label for="rate">Interest Rate (%)</label>
+                                    <input type="number" id="rate" placeholder="Enter interest rate" min="0" max="100" step="0.1">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="time">Time Period</label>
+                                    <div class="time-input">
+                                        <input type="text" inputmode="decimal" id="time" placeholder="Enter time period">
+                                        <select id="time-unit">
+                                            <option value="years">Years</option>
+                                            <option value="months">Months</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="input-group compound-only" style="display: none;">
+                                    <label for="frequency">Compounding Frequency</label>
+                                    <select id="frequency">
+                                        <option value="1">Annually</option>
+                                        <option value="2">Semi-annually</option>
+                                        <option value="4">Quarterly</option>
+                                        <option value="12">Monthly</option>
+                                        <option value="365">Daily</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="input-group compound-only" style="display: none;">
-                            <label for="frequency">Compounding Frequency</label>
-                            <select id="frequency">
-                                <option value="1">Annually</option>
-                                <option value="2">Semi-annually</option>
-                                <option value="4">Quarterly</option>
-                                <option value="12">Monthly</option>
-                                <option value="365">Daily</option>
-                            </select>
-                        </div>
-                    </div>
+                            <div class="preset-amounts">
+                                <h3>Quick Principal Amounts</h3>
+                                <div class="preset-buttons">
+                                    <button class="btn preset-btn" data-amount="10000">₹10,000</button>
+                                    <button class="btn preset-btn" data-amount="50000">₹50,000</button>
+                                    <button class="btn preset-btn" data-amount="100000">₹1,00,000</button>
+                                    <button class="btn preset-btn" data-amount="500000">₹5,00,000</button>
+                                </div>
+                            </div>
 
-                    <div class="preset-amounts">
-                        <h3>Quick Principal Amounts</h3>
-                        <div class="preset-buttons">
-                            <button class="btn preset-btn" data-amount="10000">₹10,000</button>
-                            <button class="btn preset-btn" data-amount="50000">₹50,000</button>
-                            <button class="btn preset-btn" data-amount="100000">₹1,00,000</button>
-                            <button class="btn preset-btn" data-amount="500000">₹5,00,000</button>
-                        </div>
-                    </div>
-
-                    <div class="results-section">
-                        <div class="result-box">
-                            <label for="interest-result">Interest Amount</label>
-                            <input type="text" id="interest-result" readonly>
-                        </div>
-                        <div class="result-box">
-                            <label for="total-result">Total Amount</label>
-                            <input type="text" id="total-result" readonly>
+                            <div class="results-section">
+                                <div class="result-box">
+                                    <label for="interest-result">Interest Amount</label>
+                                    <input type="text" id="interest-result" readonly>
+                                </div>
+                                <div class="result-box">
+                                    <label for="total-result">Total Amount</label>
+                                    <input type="text" id="total-result" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
