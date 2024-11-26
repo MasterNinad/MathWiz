@@ -430,30 +430,148 @@ nav {
     box-shadow: var(--shadow-sm);
 }
 
-/* Basic Calculator */
-.basic-calc {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
+/* Matrix Calculator Styles */
+.matrix-calculator {
+    padding: var(--space-lg);
 }
 
-.calculator-screen {
-    width: 100%;
-    height: 60px;
-    background-color: var(--bg-light);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 1.8rem;
-    text-align: right;
-    padding: var(--space-xs) var(--space-md);
-    margin-bottom: var(--space-md);
+.matrix-operations {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+}
+
+.operation-btn {
+    min-width: 120px;
+}
+
+.matrix-size-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.size-inputs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+}
+
+.size-inputs input {
+    width: 60px;
+    text-align: center;
+}
+
+.size-inputs span {
+    font-weight: bold;
     color: var(--text-dark);
 }
 
-.calculator-keys {
+.matrix-input-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.matrix-input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.matrix-input h3,
+.matrix-result h3 {
+    text-align: center;
+    margin-bottom: var(--space-md);
+    color: var(--primary);
+}
+
+.operation-symbol {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin: 0 var(--space-md);
+}
+
+.matrix-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-xs);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.matrix-grid input {
+    width: 100%;
+    padding: var(--space-xs);
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: var(--font-md);
+}
+
+.matrix-grid input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.matrix-grid input[readonly] {
+    background-color: var(--bg-light);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.calculate-btn {
+    display: block;
+    margin: var(--space-lg) auto;
+    min-width: 150px;
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.calculate-btn:hover {
+    background-color: var(--primary);
+    opacity: 0.9;
+}
+
+.matrix-result {
+    margin-top: var(--space-lg);
+}
+
+.determinant-result {
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .matrix-operations {
+        flex-direction: column;
+    }
+    
+    .operation-btn {
+        width: 100%;
+    }
+    
+    .matrix-input-section {
+        flex-direction: column;
+    }
+    
+    .operation-symbol {
+        margin: var(--space-md) 0;
+    }
+    
+    .matrix-input {
+        width: 100%;
+    }
 }
 
 /* Trigonometric Calculator Styles */
@@ -1038,11 +1156,6 @@ footer {
 
     .calculator {
         padding: var(--space-md);
-    }
-
-    .basic-calc .btn {
-        padding: var(--space-xs);
-        font-size: 1.1rem;
     }
 
     .financial-calc {
