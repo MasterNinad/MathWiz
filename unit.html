@@ -23,11 +23,20 @@
                 <div class="calculator-container">
                     <div class="unit-calc calculator-wrapper">
                         <div class="unit-type-selector">
-                            <button class="btn operator unit-type-btn active" data-type="length"><i class="fas fa-ruler"></i> Length</button>
+                            <button class="btn operator unit-type-btn" data-type="length"><i class="fas fa-ruler"></i> Length</button>
                             <button class="btn operator unit-type-btn" data-type="mass"><i class="fas fa-weight-hanging"></i> Mass</button>
                             <button class="btn operator unit-type-btn" data-type="time"><i class="fas fa-clock"></i> Time</button>
-                            <button class="btn operator unit-type-btn" data-type="current"><i class="fas fa-bolt"></i> Current</button>
+                            <button class="btn operator unit-type-btn active" data-type="electricity"><i class="fas fa-bolt"></i> Electricity</button>
                             <button class="btn operator unit-type-btn" data-type="temperature"><i class="fas fa-thermometer-half"></i> Temperature</button>
+                        </div>
+
+                        <div class="sub-type-container">
+                            <div class="sub-type-selector">
+                                <button class="btn operator sub-type-btn active" data-subtype="current"><i class="fas fa-bolt"></i> Current</button>
+                                <button class="btn operator sub-type-btn" data-subtype="voltage"><i class="fas fa-plug"></i> Voltage</button>
+                                <button class="btn operator sub-type-btn" data-subtype="power"><i class="fas fa-charging-station"></i> Power</button>
+                                <button class="btn operator sub-type-btn" data-subtype="resistance"><i class="fas fa-wave-square"></i> Resistance</button>
+                            </div>
                         </div>
 
                         <div class="converter-container">

@@ -60,23 +60,70 @@ const unitTypes = {
             { value: 30, from: 'd', to: 'mo', label: '30 d to mo' }
         ]
     },
-    current: {
-        name: 'Current',
-        units: {
-            MA: { name: 'Megaamperes', toBase: x => x * 1000000 },
-            kA: { name: 'Kiloamperes', toBase: x => x * 1000 },
-            A: { name: 'Amperes', toBase: x => x },
-            mA: { name: 'Milliamperes', toBase: x => x * 0.001 },
-            µA: { name: 'Microamperes', toBase: x => x * 0.000001 }
-        },
-        baseUnit: 'A',
-        presetConversions: [
-            { value: 1, from: 'A', to: 'mA', label: '1 A to mA' },
-            { value: 1000, from: 'mA', to: 'A', label: '1000 mA to A' },
-            { value: 1, from: 'kA', to: 'A', label: '1 kA to A' },
-            { value: 1, from: 'MA', to: 'kA', label: '1 MA to kA' },
-            { value: 100, from: 'µA', to: 'mA', label: '100 µA to mA' }
-        ]
+    electricity: {
+        name: 'Electricity',
+        subTypes: {
+            current: {
+                name: 'Current',
+                units: {
+                    kA: { name: 'Kiloamperes', toBase: x => x * 1000 },
+                    A: { name: 'Amperes', toBase: x => x },
+                    mA: { name: 'Milliamperes', toBase: x => x * 0.001 },
+                    µA: { name: 'Microamperes', toBase: x => x * 0.000001 }
+                },
+                baseUnit: 'A',
+                presetConversions: [
+                    { value: 1, from: 'A', to: 'mA', label: '1 A to mA' },
+                    { value: 1000, from: 'mA', to: 'A', label: '1000 mA to A' },
+                    { value: 0.1, from: 'A', to: 'mA', label: '100 mA' }
+                ]
+            },
+            voltage: {
+                name: 'Voltage',
+                units: {
+                    kV: { name: 'Kilovolts', toBase: x => x * 1000 },
+                    V: { name: 'Volts', toBase: x => x },
+                    mV: { name: 'Millivolts', toBase: x => x * 0.001 },
+                    µV: { name: 'Microvolts', toBase: x => x * 0.000001 }
+                },
+                baseUnit: 'V',
+                presetConversions: [
+                    { value: 230, from: 'V', to: 'kV', label: '230 V to kV' },
+                    { value: 5, from: 'V', to: 'mV', label: '5 V to mV' },
+                    { value: 12, from: 'V', to: 'mV', label: '12 V to mV' }
+                ]
+            },
+            power: {
+                name: 'Power',
+                units: {
+                    MW: { name: 'Megawatts', toBase: x => x * 1000000 },
+                    kW: { name: 'Kilowatts', toBase: x => x * 1000 },
+                    W: { name: 'Watts', toBase: x => x },
+                    mW: { name: 'Milliwatts', toBase: x => x * 0.001 }
+                },
+                baseUnit: 'W',
+                presetConversions: [
+                    { value: 1000, from: 'W', to: 'kW', label: '1000 W to kW' },
+                    { value: 1, from: 'kW', to: 'W', label: '1 kW to W' },
+                    { value: 100, from: 'W', to: 'mW', label: '100 W to mW' }
+                ]
+            },
+            resistance: {
+                name: 'Resistance',
+                units: {
+                    MΩ: { name: 'Megaohms', toBase: x => x * 1000000 },
+                    kΩ: { name: 'Kiloohms', toBase: x => x * 1000 },
+                    Ω: { name: 'Ohms', toBase: x => x },
+                    mΩ: { name: 'Milliohms', toBase: x => x * 0.001 }
+                },
+                baseUnit: 'Ω',
+                presetConversions: [
+                    { value: 1000, from: 'Ω', to: 'kΩ', label: '1000 Ω to kΩ' },
+                    { value: 1, from: 'MΩ', to: 'kΩ', label: '1 MΩ to kΩ' },
+                    { value: 470, from: 'Ω', to: 'kΩ', label: '470 Ω to kΩ' }
+                ]
+            }
+        }
     },
     temperature: {
         name: 'Temperature',
@@ -97,7 +144,8 @@ const unitTypes = {
 };
 
 // Current unit type
-let currentUnitType = 'length';
+let currentUnitType = 'electricity';
+let currentSubType = 'current';
 
 // Setup Unit Converter
 function setupUnitConverter() {
@@ -105,12 +153,12 @@ function setupUnitConverter() {
     const fromUnit = document.getElementById('from-unit');
     const toUnit = document.getElementById('to-unit');
     const unitTypeButtons = document.querySelectorAll('.unit-type-btn');
+    const subTypeButtons = document.querySelectorAll('.sub-type-btn');
     const swapBtn = document.getElementById('swap-btn');
     const presetList = document.getElementById('common-conversions-list');
 
     // Set initial active unit type
-    currentUnitType = 'length';
-    document.querySelector('[data-type="length"]').classList.add('active');
+    document.querySelector('[data-type="electricity"]').classList.add('active');
 
     // Add event listeners
     fromValue.addEventListener('input', () => convert());
@@ -122,6 +170,22 @@ function setupUnitConverter() {
             unitTypeButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             currentUnitType = button.dataset.type;
+            if (currentUnitType === 'electricity') {
+                document.querySelector('.sub-type-container').style.display = 'block';
+            } else {
+                document.querySelector('.sub-type-container').style.display = 'none';
+            }
+            updateUnitSelects();
+            updateCommonConversions();
+            convert();
+        });
+    });
+
+    subTypeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            subTypeButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentSubType = button.dataset.subtype;
             updateUnitSelects();
             updateCommonConversions();
             convert();
@@ -144,7 +208,12 @@ function setupUnitConverter() {
 function updateUnitSelects() {
     const fromUnit = document.getElementById('from-unit');
     const toUnit = document.getElementById('to-unit');
-    const units = unitTypes[currentUnitType].units;
+    let units;
+    if (currentUnitType === 'electricity') {
+        units = unitTypes[currentUnitType].subTypes[currentSubType].units;
+    } else {
+        units = unitTypes[currentUnitType].units;
+    }
 
     // Clear existing options
     fromUnit.innerHTML = '';
@@ -173,7 +242,12 @@ function updateUnitSelects() {
 // Update common conversions display
 function updateCommonConversions() {
     const container = document.getElementById('common-conversions-list');
-    const currentType = unitTypes[currentUnitType];
+    let currentType;
+    if (currentUnitType === 'electricity') {
+        currentType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else {
+        currentType = unitTypes[currentUnitType];
+    }
     
     container.innerHTML = '';
     
@@ -201,7 +275,12 @@ function convert(value = document.getElementById('from-value').value,
         return '';
     }
 
-    const unitType = unitTypes[currentUnitType];
+    let unitType;
+    if (currentUnitType === 'electricity') {
+        unitType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else {
+        unitType = unitTypes[currentUnitType];
+    }
     const fromUnit = unitType.units[fromUnitCode];
     const toUnit = unitType.units[toUnitCode];
     const baseUnit = unitType.baseUnit;
