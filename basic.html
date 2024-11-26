@@ -16,14 +16,12 @@
         </nav>
 
         <main>
-            <section id="basic" class="calculator-section">
+            <section class="calculator-section">
                 <h2>Basic Calculator</h2>
-                <div class="calculator-container basic-calc">
-                    <div class="calculator">
-                        <div class="display">
-                            <input type="text" id="basic-result" readonly tabindex="1">
-                        </div>
-                        <div class="buttons" id="basic-buttons">
+                <div class="calculator-container">
+                    <div class="basic-calc">
+                        <input type="text" class="calculator-screen" id="basic-result" readonly tabindex="1">
+                        <div class="calculator-keys">
                             <button class="btn" data-type="clear">C</button>
                             <button class="btn" data-type="backspace">⌫</button>
                             <button class="btn operator" data-type="operator">(</button>
@@ -55,6 +53,7 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/basic.js"></script>
 </body>
 </html>
