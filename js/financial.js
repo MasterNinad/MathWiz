@@ -122,19 +122,3 @@ function calculateInterest() {
     document.getElementById('interest-result').value = formatCurrency(interest);
     document.getElementById('total-result').value = formatCurrency(total);
 }
-
-// Format number with Indian number system (e.g., 1,00,000)
-function formatIndianNumber(number) {
-    return new Intl.NumberFormat('en-IN').format(number);
-}
-
-// Format currency with Indian Rupee symbol and number formatting
-function formatCurrency(value) {
-    const formatter = new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    return formatter.format(value);
-}

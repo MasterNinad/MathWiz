@@ -203,17 +203,18 @@ function calculateResult() {
     }
 
     try {
-        const result = evaluateExpression(finalExpression);
+        const tokens = finalExpression.split(' ');
+        const postfix = infixToPostfix(tokens);
+        const result = evaluatePostfix(postfix);
+        
         calculatorState.currentNumber = formatResult(result);
         calculatorState.expression = '';
         calculatorState.calculated = true;
         calculatorState.lastInputWasOperator = false;
-        calculatorState.openBrackets = 0;
     } catch (error) {
         calculatorState.currentNumber = 'Error';
         calculatorState.expression = '';
         calculatorState.calculated = true;
-        calculatorState.openBrackets = 0;
     }
 }
 
@@ -225,12 +226,15 @@ function handleBackspace() {
     }
 
     if (calculatorState.lastInputWasOperator) {
-        // Remove the operator and space
+        // Remove last operator
         calculatorState.expression = calculatorState.expression.slice(0, -2);
-        const parts = calculatorState.expression.split(' ');
-        calculatorState.currentNumber = parts[parts.length - 1] || '0';
+        const lastSpace = calculatorState.expression.lastIndexOf(' ');
+        calculatorState.currentNumber = lastSpace === -1 ? 
+            calculatorState.expression : 
+            calculatorState.expression.slice(lastSpace + 1);
         calculatorState.lastInputWasOperator = false;
     } else {
+        // Remove last digit
         calculatorState.currentNumber = calculatorState.currentNumber.slice(0, -1);
         if (!calculatorState.currentNumber) {
             calculatorState.currentNumber = '0';
@@ -247,18 +251,6 @@ function resetCalculator() {
     calculatorState.openBrackets = 0;
 }
 
-// Evaluate expression
-function evaluateExpression(expression) {
-    // First, split the expression into tokens
-    const tokens = expression.split(' ').filter(token => token !== '');
-    
-    // Convert infix notation to postfix (Reverse Polish Notation)
-    const postfix = infixToPostfix(tokens);
-    
-    // Evaluate the postfix expression
-    return evaluatePostfix(postfix);
-}
-
 // Convert infix expression to postfix notation
 function infixToPostfix(tokens) {
     const output = [];
@@ -267,33 +259,34 @@ function infixToPostfix(tokens) {
         '+': 1,
         '-': 1,
         '×': 2,
-        '÷': 2
+        '*': 2,
+        '÷': 2,
+        '/': 2
     };
 
     for (let token of tokens) {
-        if (!isNaN(token)) {
-            // If token is a number
-            output.push(parseFloat(token));
-        } else if (token === '(') {
+        if (token === '(') {
             operators.push(token);
-        } else if (token === ')') {
-            while (operators.length > 0 && operators[operators.length - 1] !== '(') {
+        }
+        else if (token === ')') {
+            while (operators.length && operators[operators.length - 1] !== '(') {
                 output.push(operators.pop());
             }
             operators.pop(); // Remove '('
-        } else {
-            // Token is an operator
-            while (operators.length > 0 && 
-                   operators[operators.length - 1] !== '(' && 
+        }
+        else if (token in precedence) {
+            while (operators.length && operators[operators.length - 1] !== '(' &&
                    precedence[operators[operators.length - 1]] >= precedence[token]) {
                 output.push(operators.pop());
             }
             operators.push(token);
         }
+        else {
+            output.push(token);
+        }
     }
 
-    // Pop remaining operators
-    while (operators.length > 0) {
+    while (operators.length) {
         output.push(operators.pop());
     }
 
@@ -303,31 +296,28 @@ function infixToPostfix(tokens) {
 // Evaluate postfix expression
 function evaluatePostfix(postfix) {
     const stack = [];
+    const operators = {
+        '+': (a, b) => a + b,
+        '-': (a, b) => a - b,
+        '×': (a, b) => a * b,
+        '*': (a, b) => a * b,
+        '÷': (a, b) => {
+            if (b === 0) throw new Error('Division by zero');
+            return a / b;
+        },
+        '/': (a, b) => {
+            if (b === 0) throw new Error('Division by zero');
+            return a / b;
+        }
+    };
 
     for (let token of postfix) {
-        if (typeof token === 'number') {
-            stack.push(token);
+        if (token in operators) {
+            const b = parseFloat(stack.pop());
+            const a = parseFloat(stack.pop());
+            stack.push(operators[token](a, b));
         } else {
-            const b = stack.pop();
-            const a = stack.pop();
-            
-            switch (token) {
-                case '+':
-                    stack.push(a + b);
-                    break;
-                case '-':
-                    stack.push(a - b);
-                    break;
-                case '×':
-                    stack.push(a * b);
-                    break;
-                case '÷':
-                    if (b === 0) throw new Error('Division by zero');
-                    stack.push(a / b);
-                    break;
-                default:
-                    throw new Error('Invalid operator');
-            }
+            stack.push(token);
         }
     }
 
@@ -337,35 +327,21 @@ function evaluatePostfix(postfix) {
 // Update display
 function updateDisplay() {
     const display = document.getElementById('basic-result');
-    if (display) {
-        let displayText = calculatorState.expression;
-        if (!calculatorState.lastInputWasOperator) {
-            displayText += (displayText ? ' ' : '') + calculatorState.currentNumber;
-        }
-        display.value = displayText || calculatorState.currentNumber;
+    if (!display) return;
+
+    const expressionDisplay = document.getElementById('expression');
+    if (expressionDisplay) {
+        expressionDisplay.textContent = calculatorState.expression;
     }
+    
+    display.value = calculatorState.currentNumber;
 }
 
 // Check if key is a calculator key
 function isCalculatorKey(key) {
-    return /[\d+\-*/.=Enter]/.test(key);
-}
-
-// Format result
-function formatResult(value) {
-    if (typeof value !== 'number' || !isFinite(value)) return 'Error';
-    
-    // Convert to string and check for exponential notation
-    const stringValue = value.toString();
-    if (stringValue.includes('e')) {
-        return value.toExponential(6);
-    }
-    
-    // Handle regular numbers
-    if (Math.abs(value) >= 1e9 || (Math.abs(value) < 1e-6 && value !== 0)) {
-        return value.toExponential(6);
-    }
-    
-    // Remove trailing zeros after decimal point
-    return Number(value.toFixed(8)).toString();
+    return /^[0-9+\-*/.()=]$/.test(key) || 
+           key === 'Enter' || 
+           key === 'Backspace' || 
+           key === 'Delete' || 
+           key === 'Escape';
 }

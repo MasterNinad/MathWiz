@@ -119,11 +119,3 @@ function updateTrigDisplay(elementId, value) {
     // Format the value with appropriate precision
     element.value = formatResult(value);
 }
-
-// Format result with appropriate precision
-function formatResult(value) {
-    if (Math.abs(value) >= 1e6) {
-        return value.toExponential(6);
-    }
-    return Number(value.toFixed(6)).toString();
-}

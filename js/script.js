@@ -54,25 +54,18 @@ function handleCalculationError(error) {
     return 'Error';
 }
 
-// Perform basic arithmetic calculations
-function performCalculation(operator, firstOperand, secondOperand) {
-    try {
-        switch (operator) {
-            case '+':
-                return firstOperand + secondOperand;
-            case '-':
-                return firstOperand - secondOperand;
-            case '*':
-                return firstOperand * secondOperand;
-            case '/':
-                if (secondOperand === 0) {
-                    throw new Error('Division by zero');
-                }
-                return firstOperand / secondOperand;
-            default:
-                throw new Error('Invalid operator');
-        }
-    } catch (error) {
-        return handleCalculationError(error);
-    }
+// Format currency with Indian Rupee symbol and number formatting
+function formatCurrency(value) {
+    const formatter = new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    return formatter.format(value);
+}
+
+// Format number with Indian number system (e.g., 1,00,000)
+function formatIndianNumber(number) {
+    return new Intl.NumberFormat('en-IN').format(number);
 }
