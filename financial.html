@@ -26,10 +26,12 @@
                             <div class="interest-type-toggle">
                                 <button class="toggle-btn active" data-type="simple">Simple Interest</button>
                                 <button class="toggle-btn" data-type="compound">Compound Interest</button>
+                                <button class="toggle-btn" data-type="roi">ROI Calculator</button>
+                                <button class="toggle-btn" data-type="currency">Currency Converter</button>
                             </div>
 
                             <div class="financial-inputs">
-                                <div class="input-group">
+                                <div class="input-group simple-compound">
                                     <label for="principal">Principal Amount</label>
                                     <div class="input-wrapper">
                                         <div class="currency-symbol">₹</div>
@@ -37,12 +39,28 @@
                                     </div>
                                 </div>
 
-                                <div class="input-group">
+                                <div class="input-group roi-only" style="display: none;">
+                                    <label for="initial-investment">Initial Investment</label>
+                                    <div class="input-wrapper">
+                                        <div class="currency-symbol">₹</div>
+                                        <input type="text" inputmode="numeric" id="initial-investment" placeholder="Enter initial investment">
+                                    </div>
+                                </div>
+
+                                <div class="input-group roi-only" style="display: none;">
+                                    <label for="final-value">Final Value</label>
+                                    <div class="input-wrapper">
+                                        <div class="currency-symbol">₹</div>
+                                        <input type="text" inputmode="numeric" id="final-value" placeholder="Enter final value">
+                                    </div>
+                                </div>
+
+                                <div class="input-group simple-compound">
                                     <label for="rate">Interest Rate (%)</label>
                                     <input type="number" id="rate" placeholder="Enter interest rate" min="0" max="100" step="0.1">
                                 </div>
 
-                                <div class="input-group">
+                                <div class="input-group simple-compound">
                                     <label for="time">Time Period</label>
                                     <div class="time-input">
                                         <input type="text" inputmode="decimal" id="time" placeholder="Enter time period">
@@ -63,9 +81,48 @@
                                         <option value="365">Daily</option>
                                     </select>
                                 </div>
+
+                                <div class="input-group currency-only" style="display: none;">
+                                    <label for="amount-to-convert">Amount</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" inputmode="numeric" id="amount-to-convert" placeholder="Enter amount">
+                                    </div>
+                                </div>
+
+                                <div class="input-group currency-only" style="display: none;">
+                                    <label for="from-currency">From Currency</label>
+                                    <select id="from-currency">
+                                        <option value="USD">US Dollar (USD)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                        <option value="GBP">British Pound (GBP)</option>
+                                        <option value="INR" selected>Indian Rupee (INR)</option>
+                                        <option value="JPY">Japanese Yen (JPY)</option>
+                                        <option value="AUD">Australian Dollar (AUD)</option>
+                                        <option value="CAD">Canadian Dollar (CAD)</option>
+                                        <option value="CHF">Swiss Franc (CHF)</option>
+                                        <option value="CNY">Chinese Yuan (CNY)</option>
+                                        <option value="SGD">Singapore Dollar (SGD)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group currency-only" style="display: none;">
+                                    <label for="to-currency">To Currency</label>
+                                    <select id="to-currency">
+                                        <option value="USD" selected>US Dollar (USD)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                        <option value="GBP">British Pound (GBP)</option>
+                                        <option value="INR">Indian Rupee (INR)</option>
+                                        <option value="JPY">Japanese Yen (JPY)</option>
+                                        <option value="AUD">Australian Dollar (AUD)</option>
+                                        <option value="CAD">Canadian Dollar (CAD)</option>
+                                        <option value="CHF">Swiss Franc (CHF)</option>
+                                        <option value="CNY">Chinese Yuan (CNY)</option>
+                                        <option value="SGD">Singapore Dollar (SGD)</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="preset-amounts">
+                            <div class="preset-amounts simple-compound">
                                 <h3>Quick Principal Amounts</h3>
                                 <div class="preset-buttons">
                                     <button class="btn preset-btn" data-amount="10000">₹10,000</button>
@@ -77,11 +134,11 @@
 
                             <div class="results-section">
                                 <div class="result-box">
-                                    <label for="interest-result">Interest Amount</label>
+                                    <label for="interest-result" class="result-label" data-simple="Interest Amount" data-compound="Interest Amount" data-roi="Net Gain" data-currency="Converted Amount">Interest Amount</label>
                                     <input type="text" id="interest-result" readonly>
                                 </div>
                                 <div class="result-box">
-                                    <label for="total-result">Total Amount</label>
+                                    <label for="total-result" class="result-label" data-simple="Total Amount" data-compound="Maturity Amount" data-roi="ROI %" data-currency="Exchange Rate">Total Amount</label>
                                     <input type="text" id="total-result" readonly>
                                 </div>
                             </div>
