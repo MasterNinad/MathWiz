@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathWiz - Statistics Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="trig.html" class="nav-link">Trigonometry</a>
+            <a href="matrix.html" class="nav-link">Matrix</a>
+            <a href="financial.html" class="nav-link">Financial</a>
+            <a href="unit.html" class="nav-link">Unit Converter</a>
+            <a href="statistics.html" class="nav-link active">Statistics</a>
+        </nav>
+
+        <main>
+            <section class="calculator-section">
+                <h2>Statistics Calculator</h2>
+                <div class="calculator-container">
+                    <div class="stats-calc calculator-wrapper">
+                        <div class="data-input">
+                            <label for="data-values">Enter Numbers (comma or space separated):</label>
+                            <textarea id="data-values" class="calculator-screen" rows="3" placeholder="Example: 1, 2, 3, 4, 5"></textarea>
+                            <button id="calculate-stats" class="btn operator"><i class="fas fa-calculator"></i> Calculate</button>
+                        </div>
+                        
+                        <div class="stats-results">
+                            <div class="result-group">
+                                <h3>Central Tendency</h3>
+                                <div class="result-box">
+                                    <label>Mean</label>
+                                    <input type="text" id="mean-result" readonly>
+                                </div>
+                                <div class="result-box">
+                                    <label>Median</label>
+                                    <input type="text" id="median-result" readonly>
+                                </div>
+                                <div class="result-box">
+                                    <label>Mode</label>
+                                    <input type="text" id="mode-result" readonly>
+                                </div>
+                            </div>
+
+                            <div class="result-group">
+                                <h3>Data Summary</h3>
+                                <div class="result-box">
+                                    <label>Count</label>
+                                    <input type="text" id="count-result" readonly>
+                                </div>
+                                <div class="result-box">
+                                    <label>Sum</label>
+                                    <input type="text" id="sum-result" readonly>
+                                </div>
+                                <div class="result-box">
+                                    <label>Range</label>
+                                    <input type="text" id="range-result" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <button class="btn operator" id="sort-asc"><i class="fas fa-sort-amount-up"></i> Sort Ascending</button>
+                            <button class="btn operator" id="sort-desc"><i class="fas fa-sort-amount-down"></i> Sort Descending</button>
+                            <button class="btn operator" id="clear-data"><i class="fas fa-eraser"></i> Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 MathWiz Calculator. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/statistics.js"></script>
+</body>
+</html>
