@@ -160,6 +160,33 @@ function setupFinancialCalculator() {
         });
     });
 
+    // Handle copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const targetId = btn.dataset.target;
+            const input = document.getElementById(targetId);
+            
+            try {
+                await navigator.clipboard.writeText(input.value);
+                
+                // Visual feedback
+                btn.classList.add('copied');
+                const icon = btn.querySelector('i');
+                icon.classList.remove('fa-copy');
+                icon.classList.add('fa-check');
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-copy');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text:', err);
+            }
+        });
+    });
+
     // Initial calculation
     calculateResults();
 }

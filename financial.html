@@ -135,11 +135,21 @@
                             <div class="results-section">
                                 <div class="result-box">
                                     <label for="interest-result" class="result-label" data-simple="Interest Amount" data-compound="Interest Amount" data-roi="Net Gain" data-currency="Converted Amount">Interest Amount</label>
-                                    <input type="text" id="interest-result" readonly>
+                                    <div class="result-input-group">
+                                        <input type="text" id="interest-result" readonly>
+                                        <button class="copy-btn" data-target="interest-result" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="result-box">
                                     <label for="total-result" class="result-label" data-simple="Total Amount" data-compound="Maturity Amount" data-roi="ROI %" data-currency="Exchange Rate">Total Amount</label>
-                                    <input type="text" id="total-result" readonly>
+                                    <div class="result-input-group">
+                                        <input type="text" id="total-result" readonly>
+                                        <button class="copy-btn" data-target="total-result" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

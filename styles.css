@@ -1360,3 +1360,41 @@ footer {
         font-size: 0.9rem;
     }
 }
+
+/* Copy Button Styles */
+.result-input-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.result-input-group input {
+    flex: 1;
+}
+
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.copy-btn.copied {
+    background: var(--success);
+    color: var(--white);
+    border-color: var(--success);
+}
