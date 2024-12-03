@@ -267,6 +267,51 @@ const unitTypes = {
             }
         }
     },
+    storage: {
+        name: 'Digital Storage',
+        subTypes: {
+            binary: {
+                name: 'Binary Storage',
+                units: {
+                    bit: { name: 'Bits', toBase: x => x },
+                    B: { name: 'Bytes', toBase: x => x * 8 },
+                    KB: { name: 'Kilobytes', toBase: x => x * 8 * 1024 },
+                    MB: { name: 'Megabytes', toBase: x => x * 8 * Math.pow(1024, 2) },
+                    GB: { name: 'Gigabytes', toBase: x => x * 8 * Math.pow(1024, 3) },
+                    TB: { name: 'Terabytes', toBase: x => x * 8 * Math.pow(1024, 4) },
+                    PB: { name: 'Petabytes', toBase: x => x * 8 * Math.pow(1024, 5) }
+                },
+                baseUnit: 'bit',
+                presetConversions: [
+                    { value: 1, from: 'GB', to: 'MB', label: '1 GB to MB' },
+                    { value: 1, from: 'MB', to: 'KB', label: '1 MB to KB' },
+                    { value: 1024, from: 'B', to: 'KB', label: '1024 B to KB' },
+                    { value: 1, from: 'TB', to: 'GB', label: '1 TB to GB' },
+                    { value: 8, from: 'bit', to: 'B', label: '8 bits to B' }
+                ]
+            },
+            decimal: {
+                name: 'Decimal Storage',
+                units: {
+                    bit: { name: 'Bits', toBase: x => x },
+                    B: { name: 'Bytes', toBase: x => x * 8 },
+                    kB: { name: 'Kilobytes', toBase: x => x * 8 * 1000 },
+                    MB: { name: 'Megabytes', toBase: x => x * 8 * Math.pow(1000, 2) },
+                    GB: { name: 'Gigabytes', toBase: x => x * 8 * Math.pow(1000, 3) },
+                    TB: { name: 'Terabytes', toBase: x => x * 8 * Math.pow(1000, 4) },
+                    PB: { name: 'Petabytes', toBase: x => x * 8 * Math.pow(1000, 5) }
+                },
+                baseUnit: 'bit',
+                presetConversions: [
+                    { value: 1, from: 'GB', to: 'MB', label: '1 GB to MB' },
+                    { value: 1, from: 'MB', to: 'kB', label: '1 MB to kB' },
+                    { value: 1000, from: 'B', to: 'kB', label: '1000 B to kB' },
+                    { value: 1, from: 'TB', to: 'GB', label: '1 TB to GB' },
+                    { value: 8, from: 'bit', to: 'B', label: '8 bits to B' }
+                ]
+            }
+        }
+    },
     temperature: {
         name: 'Temperature',
         units: {
@@ -294,6 +339,51 @@ const unitTypes = {
             { value: 0, from: 'C', to: 'K', label: '0°C to K' },
             { value: 273.15, from: 'K', to: 'C', label: '273.15K to °C' }
         ]
+    },
+    others: {
+        name: 'Others',
+        subTypes: {
+            pressure: {
+                name: 'Pressure',
+                units: {
+                    Pa: { name: 'Pascal', toBase: x => x },
+                    kPa: { name: 'Kilopascal', toBase: x => x * 1000 },
+                    MPa: { name: 'Megapascal', toBase: x => x * 1000000 },
+                    bar: { name: 'Bar', toBase: x => x * 100000 },
+                    atm: { name: 'Atmosphere', toBase: x => x * 101325 },
+                    psi: { name: 'Pounds per Square Inch', toBase: x => x * 6894.76 },
+                    mmHg: { name: 'Millimeters of Mercury', toBase: x => x * 133.322 },
+                    inHg: { name: 'Inches of Mercury', toBase: x => x * 3386.39 }
+                },
+                baseUnit: 'Pa',
+                presetConversions: [
+                    { value: 1, from: 'atm', to: 'bar', label: '1 atm to bar' },
+                    { value: 1, from: 'bar', to: 'psi', label: '1 bar to psi' },
+                    { value: 760, from: 'mmHg', to: 'atm', label: '760 mmHg to atm' },
+                    { value: 100, from: 'kPa', to: 'bar', label: '100 kPa to bar' },
+                    { value: 14.7, from: 'psi', to: 'atm', label: '14.7 psi to atm' }
+                ]
+            },
+            density: {
+                name: 'Density',
+                units: {
+                    kgm3: { name: 'Kilograms per Cubic Meter', toBase: x => x },
+                    gcm3: { name: 'Grams per Cubic Centimeter', toBase: x => x * 1000 },
+                    kgl: { name: 'Kilograms per Liter', toBase: x => x * 1000 },
+                    gl: { name: 'Grams per Liter', toBase: x => x },
+                    lbft3: { name: 'Pounds per Cubic Foot', toBase: x => x * 16.0185 },
+                    lbgal: { name: 'Pounds per Gallon', toBase: x => x * 119.826 }
+                },
+                baseUnit: 'kgm3',
+                presetConversions: [
+                    { value: 1, from: 'gcm3', to: 'kgm3', label: '1 g/cm³ to kg/m³' },
+                    { value: 1, from: 'kgl', to: 'gcm3', label: '1 kg/L to g/cm³' },
+                    { value: 1000, from: 'gl', to: 'kgm3', label: '1000 g/L to kg/m³' },
+                    { value: 62.4, from: 'lbft3', to: 'kgm3', label: '62.4 lb/ft³ to kg/m³' },
+                    { value: 8.34, from: 'lbgal', to: 'kgl', label: '8.34 lb/gal to kg/L' }
+                ]
+            }
+        }
     }
 };
 
@@ -330,32 +420,41 @@ function setupUnitConverter() {
             // Reset all subtype buttons
             document.querySelectorAll('.sub-type-btn').forEach(btn => btn.classList.remove('active'));
 
+            // Hide all subtype containers first
+            document.querySelector('.sub-type-container').style.display = 'none';
+            document.querySelector('.electricity-subtypes').style.display = 'none';
+            document.querySelector('.time-subtypes').style.display = 'none';
+            document.querySelector('.length-subtypes').style.display = 'none';
+            document.querySelector('.storage-subtypes').style.display = 'none';
+            document.querySelector('.others-subtypes').style.display = 'none';
+
             if (currentUnitType === 'length') {
                 document.querySelector('.sub-type-container').style.display = 'block';
-                document.querySelector('.electricity-subtypes').style.display = 'none';
-                document.querySelector('.time-subtypes').style.display = 'none';
                 document.querySelector('.length-subtypes').style.display = 'block';
                 currentSubType = 'distance';
                 document.querySelector('.length-subtypes .sub-type-btn[data-subtype="distance"]').classList.add('active');
             } else if (currentUnitType === 'time') {
                 document.querySelector('.sub-type-container').style.display = 'block';
-                document.querySelector('.electricity-subtypes').style.display = 'none';
-                document.querySelector('.length-subtypes').style.display = 'none';
                 document.querySelector('.time-subtypes').style.display = 'block';
                 currentSubType = 'standard';
                 document.querySelector('.time-subtypes .sub-type-btn[data-subtype="standard"]').classList.add('active');
             } else if (currentUnitType === 'electricity') {
                 document.querySelector('.sub-type-container').style.display = 'block';
-                document.querySelector('.time-subtypes').style.display = 'none';
-                document.querySelector('.length-subtypes').style.display = 'none';
                 document.querySelector('.electricity-subtypes').style.display = 'block';
                 currentSubType = 'current';
                 document.querySelector('.electricity-subtypes .sub-type-btn[data-subtype="current"]').classList.add('active');
+            } else if (currentUnitType === 'storage') {
+                document.querySelector('.sub-type-container').style.display = 'block';
+                document.querySelector('.storage-subtypes').style.display = 'block';
+                currentSubType = 'binary';
+                document.querySelector('.storage-subtypes .sub-type-btn[data-subtype="binary"]').classList.add('active');
+            } else if (currentUnitType === 'others') {
+                document.querySelector('.sub-type-container').style.display = 'block';
+                document.querySelector('.others-subtypes').style.display = 'block';
+                currentSubType = 'pressure';
+                document.querySelector('.others-subtypes .sub-type-btn[data-subtype="pressure"]').classList.add('active');
             } else {
                 document.querySelector('.sub-type-container').style.display = 'none';
-                document.querySelector('.electricity-subtypes').style.display = 'none';
-                document.querySelector('.length-subtypes').style.display = 'none';
-                document.querySelector('.time-subtypes').style.display = 'none';
             }
             updateUnitSelects();
             updateCommonConversions();
@@ -366,7 +465,7 @@ function setupUnitConverter() {
     // Handle subtype selection for both electricity and length
     document.querySelectorAll('.sub-type-btn').forEach(button => {
         button.addEventListener('click', () => {
-            const parentContainer = button.closest('.electricity-subtypes, .length-subtypes, .time-subtypes');
+            const parentContainer = button.closest('.electricity-subtypes, .length-subtypes, .time-subtypes, .storage-subtypes, .others-subtypes');
             if (parentContainer) {
                 parentContainer.querySelectorAll('.sub-type-btn').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
@@ -400,6 +499,10 @@ function updateUnitSelects() {
     } else if (currentUnitType === 'length') {
         units = unitTypes[currentUnitType].subTypes[currentSubType].units;
     } else if (currentUnitType === 'time') {
+        units = unitTypes[currentUnitType].subTypes[currentSubType].units;
+    } else if (currentUnitType === 'storage') {
+        units = unitTypes[currentUnitType].subTypes[currentSubType].units;
+    } else if (currentUnitType === 'others') {
         units = unitTypes[currentUnitType].subTypes[currentSubType].units;
     } else {
         units = unitTypes[currentUnitType].units;
@@ -439,6 +542,10 @@ function updateCommonConversions() {
         currentType = unitTypes[currentUnitType].subTypes[currentSubType];
     } else if (currentUnitType === 'time') {
         currentType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else if (currentUnitType === 'storage') {
+        currentType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else if (currentUnitType === 'others') {
+        currentType = unitTypes[currentUnitType].subTypes[currentSubType];
     } else {
         currentType = unitTypes[currentUnitType];
     }
@@ -476,6 +583,10 @@ function convert(value = document.getElementById('from-value').value,
         unitType = unitTypes[currentUnitType].subTypes[currentSubType];
     } else if (currentUnitType === 'time') {
         unitType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else if (currentUnitType === 'storage') {
+        unitType = unitTypes[currentUnitType].subTypes[currentSubType];
+    } else if (currentUnitType === 'others') {
+        unitType = unitTypes[currentUnitType].subTypes[currentSubType];
     } else {
         unitType = unitTypes[currentUnitType];
     }
@@ -512,7 +623,7 @@ function convert(value = document.getElementById('from-value').value,
 
 // Format result
 function formatResult(result) {
-    return result.toFixed(2);
+    return Number(result).toFixed(4).replace(/\.?0+$/, '');
 }
 
 // Initialize when DOM is loaded

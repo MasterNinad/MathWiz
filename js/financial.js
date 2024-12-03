@@ -1,3 +1,16 @@
+// Debounce function to limit API calls
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // Financial Calculator Setup
 function setupFinancialCalculator() {
     const toggleBtns = document.querySelectorAll('.toggle-btn');
@@ -91,15 +104,13 @@ function setupFinancialCalculator() {
     [fromCurrencySelect, toCurrencySelect].forEach(select => {
         if (select) {
             select.addEventListener('change', () => {
-                if (amountToConvertInput.value) {
-                    calculateCurrency();
-                }
+                calculateCurrency();
             });
         }
     });
 
     if (amountToConvertInput) {
-        amountToConvertInput.addEventListener('input', function(e) {
+        amountToConvertInput.addEventListener('input', debounce(function(e) {
             let value = e.target.value.replace(/[^0-9.]/g, '');
             // Allow only one decimal point
             const decimalCount = (value.match(/\./g) || []).length;
@@ -107,10 +118,8 @@ function setupFinancialCalculator() {
                 value = value.replace(/\./g, (match, index) => index === value.indexOf('.') ? match : '');
             }
             e.target.value = value;
-            if (value) {
-                calculateCurrency();
-            }
-        });
+            calculateCurrency();
+        }, 300));
     }
 
     // Toggle between calculators
@@ -272,6 +281,8 @@ async function calculateCurrency() {
     const fromCurrency = document.getElementById('from-currency').value;
     const toCurrency = document.getElementById('to-currency').value;
 
+    if (!fromCurrency || !toCurrency) return;
+
     try {
         // Using the ExchangeRate-API for real-time rates
         const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
@@ -281,10 +292,10 @@ async function calculateCurrency() {
         const convertedAmount = amount * rate;
         
         // Format the converted amount based on currency
-        const convertedFormatted = new Intl.NumberFormat('en-US', {
+        const convertedFormatted = amount ? new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: toCurrency
-        }).format(convertedAmount);
+        }).format(convertedAmount) : '-';
         
         // Format the exchange rate
         const rateFormatted = `1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;

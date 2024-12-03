@@ -63,7 +63,7 @@ function formatResult(value) {
 
     
 
-    // Convert to number and fix precision
+    // Convert to number
 
     const numValue = Number(value);
 
@@ -83,15 +83,15 @@ function formatResult(value) {
 
     if (Math.abs(numValue) >= 1e9 || Math.abs(numValue) < 1e-6) {
 
-        return numValue.toExponential(6);
+        return numValue.toExponential(4);
 
     }
 
     
 
-    // Regular number formatting
+    // Regular number formatting: up to 4 decimal places, no trailing zeros
 
-    return numValue.toFixed(6).replace(/\.?0+$/, '');
+    return numValue.toFixed(4).replace(/\.?0+$/, '');
 
 }
 
@@ -138,4 +138,3 @@ function formatIndianNumber(number) {
     return new Intl.NumberFormat('en-IN').format(number);
 
 }
-

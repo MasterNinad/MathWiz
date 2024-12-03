@@ -160,7 +160,7 @@ function displayResult(result) {
     if (typeof result === 'number') {
         const input = document.createElement('input');
         input.type = 'number';
-        input.value = result.toFixed(3);
+        input.value = Number(result).toFixed(4).replace(/\.?0+$/, '');
         input.readOnly = true;
         resultGrid.appendChild(input);
         return;
@@ -171,7 +171,7 @@ function displayResult(result) {
         row.forEach(value => {
             const input = document.createElement('input');
             input.type = 'number';
-            input.value = value.toFixed(3);
+            input.value = Number(value).toFixed(4).replace(/\.?0+$/, '');
             input.readOnly = true;
             resultGrid.appendChild(input);
         });
