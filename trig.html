@@ -33,42 +33,57 @@
                             <label for="angle">Enter Angle:</label>
                             <input type="number" id="angle" placeholder="0" tabindex="2">
                         </div>
-                        <div class="trig-results">
-                            <div class="result-box">
-                                <label>sin(θ)</label>
-                                <input type="text" id="sin-result" readonly tabindex="3">
+                        <div class="trig-content">
+                            <div class="trig-results">
+                                <div class="result-box">
+                                    <label>sin(θ)</label>
+                                    <input type="text" id="sin-result" readonly tabindex="3">
+                                </div>
+                                <div class="result-box">
+                                    <label>cos(θ)</label>
+                                    <input type="text" id="cos-result" readonly tabindex="4">
+                                </div>
+                                <div class="result-box">
+                                    <label>tan(θ)</label>
+                                    <input type="text" id="tan-result" readonly tabindex="5">
+                                </div>
+                                <div class="result-box">
+                                    <label>cot(θ)</label>
+                                    <input type="text" id="cot-result" readonly tabindex="6">
+                                </div>
+                                <div class="result-box">
+                                    <label>sec(θ)</label>
+                                    <input type="text" id="sec-result" readonly tabindex="7">
+                                </div>
+                                <div class="result-box">
+                                    <label>cosec(θ)</label>
+                                    <input type="text" id="cosec-result" readonly tabindex="8">
+                                </div>
+                                <div class="result-box">
+                                    <label>arcsin(θ)</label>
+                                    <input type="text" id="arcsin-result" readonly tabindex="9">
+                                </div>
+                                <div class="result-box">
+                                    <label>arccos(θ)</label>
+                                    <input type="text" id="arccos-result" readonly tabindex="10">
+                                </div>
+                                <div class="result-box">
+                                    <label>arctan(θ)</label>
+                                    <input type="text" id="arctan-result" readonly tabindex="11">
+                                </div>
                             </div>
-                            <div class="result-box">
-                                <label>cos(θ)</label>
-                                <input type="text" id="cos-result" readonly tabindex="4">
-                            </div>
-                            <div class="result-box">
-                                <label>tan(θ)</label>
-                                <input type="text" id="tan-result" readonly tabindex="5">
-                            </div>
-                            <div class="result-box">
-                                <label>cot(θ)</label>
-                                <input type="text" id="cot-result" readonly tabindex="6">
-                            </div>
-                            <div class="result-box">
-                                <label>sec(θ)</label>
-                                <input type="text" id="sec-result" readonly tabindex="7">
-                            </div>
-                            <div class="result-box">
-                                <label>cosec(θ)</label>
-                                <input type="text" id="cosec-result" readonly tabindex="8">
-                            </div>
-                            <div class="result-box">
-                                <label>arcsin(θ)</label>
-                                <input type="text" id="arcsin-result" readonly tabindex="9">
-                            </div>
-                            <div class="result-box">
-                                <label>arccos(θ)</label>
-                                <input type="text" id="arccos-result" readonly tabindex="10">
-                            </div>
-                            <div class="result-box">
-                                <label>arctan(θ)</label>
-                                <input type="text" id="arctan-result" readonly tabindex="11">
+                            <div class="unit-circle-container">
+                                <canvas id="unit-circle" width="300" height="300"></canvas>
+                                <div class="circle-labels">
+                                    <span class="label-0">0°</span>
+                                    <span class="label-90">90°</span>
+                                    <span class="label-180">180°</span>
+                                    <span class="label-270">270°</span>
+                                </div>
+                                <div class="axis-labels">
+                                    <span class="label-x">x</span>
+                                    <span class="label-y">y</span>
+                                </div>
                             </div>
                         </div>
                         <div class="angle-presets">

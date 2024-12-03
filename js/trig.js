@@ -62,6 +62,102 @@ function handleTrigKeyboard(event) {
     return false;
 }
 
+// Draw unit circle with angle
+function drawUnitCircle(angleInRadians) {
+    const canvas = document.getElementById('unit-circle');
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = Math.min(width, height) / 2.5;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Set line styles
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
+
+    // Draw coordinate axes
+    ctx.beginPath();
+    ctx.moveTo(0, centerY);
+    ctx.lineTo(width, centerY);
+    ctx.moveTo(centerX, 0);
+    ctx.lineTo(centerX, height);
+    ctx.stroke();
+
+    // Draw unit circle
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
+    ctx.stroke();
+
+    // Calculate point on circle
+    const x = radius * Math.cos(angleInRadians);
+    const y = radius * Math.sin(angleInRadians);
+
+    // Draw angle arc
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius / 4, 0, -angleInRadians, angleInRadians > 0);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+    ctx.stroke();
+
+    // Draw radius line to point
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + x, centerY - y);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Draw projection lines
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(centerX + x, centerY - y);
+    ctx.lineTo(centerX + x, centerY);
+    ctx.moveTo(centerX + x, centerY - y);
+    ctx.lineTo(centerX, centerY - y);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw point on circle
+    ctx.beginPath();
+    ctx.arc(centerX + x, centerY - y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+    ctx.fill();
+
+    // Update angle labels based on unit mode
+    const angleUnitToggle = document.querySelector('#angle-unit');
+    const isRadians = angleUnitToggle.checked;
+    const labels = document.querySelectorAll('.circle-labels span');
+    labels.forEach(label => {
+        const angle = parseInt(label.className.replace('label-', ''));
+        label.textContent = isRadians ? `${(angle * Math.PI / 180).toFixed(1)}π` : `${angle}°`;
+    });
+}
+
+// Update trigonometric display
+function updateTrigDisplay(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    if (!isFinite(value) || Math.abs(value) > 1e15) {
+        element.value = 'undefined';
+        return;
+    }
+
+    if (Math.abs(value) < 1e-10) {
+        element.value = '0';
+        return;
+    }
+
+    // Format the value with appropriate precision
+    element.value = formatResult(value);
+}
+
 // Calculate trigonometric values
 function calculateTrig() {
     const angleInput = document.querySelector('#angle');
@@ -73,6 +169,9 @@ function calculateTrig() {
     const angleInRadians = isRadians ? angle : (angle * Math.PI / 180);
     
     try {
+        // Draw unit circle
+        drawUnitCircle(angleInRadians);
+
         // Calculate primary trig values
         const sin = Math.sin(angleInRadians);
         const cos = Math.cos(angleInRadians);
@@ -113,21 +212,5 @@ function calculateTrig() {
     }
 }
 
-// Update trigonometric display
-function updateTrigDisplay(elementId, value) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-
-    if (!isFinite(value) || Math.abs(value) > 1e15) {
-        element.value = 'undefined';
-        return;
-    }
-
-    if (Math.abs(value) < 1e-10) {
-        element.value = '0';
-        return;
-    }
-
-    // Format the value with appropriate precision
-    element.value = formatResult(value);
-}
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupTrigCalculator);
