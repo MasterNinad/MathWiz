@@ -382,6 +382,25 @@ const unitTypes = {
                     { value: 62.4, from: 'lbft3', to: 'kgm3', label: '62.4 lb/ft³ to kg/m³' },
                     { value: 8.34, from: 'lbgal', to: 'kgl', label: '8.34 lb/gal to kg/L' }
                 ]
+            },
+            force: {
+                name: 'Force',
+                units: {
+                    N: { name: 'Newton', toBase: x => x },
+                    kN: { name: 'Kilonewton', toBase: x => x * 1000 },
+                    MN: { name: 'Meganewton', toBase: x => x * 1000000 },
+                    lbf: { name: 'Pound-force', toBase: x => x * 4.44822 },
+                    kgf: { name: 'Kilogram-force', toBase: x => x * 9.80665 },
+                    dyn: { name: 'Dyne', toBase: x => x * 0.00001 }
+                },
+                baseUnit: 'N',
+                presetConversions: [
+                    { value: 1, from: 'kN', to: 'lbf', label: '1 kN to lbf' },
+                    { value: 1, from: 'N', to: 'lbf', label: '1 N to lbf' },
+                    { value: 1, from: 'kgf', to: 'N', label: '1 kgf to N' },
+                    { value: 100000, from: 'dyn', to: 'N', label: '100000 dyn to N' },
+                    { value: 1000, from: 'lbf', to: 'kN', label: '1000 lbf to kN' }
+                ]
             }
         }
     }

@@ -82,6 +82,11 @@ function calculateTrig() {
         const cot = 1 / tan;
         const sec = 1 / cos;
         const cosec = 1 / sin;
+
+        // Calculate inverse trig values (in radians)
+        const arcsin = Math.asin(sin);
+        const arccos = Math.acos(cos);
+        const arctan = Math.atan(tan);
         
         // Update displays
         updateTrigDisplay('sin-result', sin);
@@ -90,11 +95,18 @@ function calculateTrig() {
         updateTrigDisplay('cot-result', cot);
         updateTrigDisplay('sec-result', sec);
         updateTrigDisplay('cosec-result', cosec);
+        
+        // Update inverse trig displays (convert to degrees if needed)
+        const arcValue = isRadians ? 1 : 180 / Math.PI;
+        updateTrigDisplay('arcsin-result', arcsin * arcValue);
+        updateTrigDisplay('arccos-result', arccos * arcValue);
+        updateTrigDisplay('arctan-result', arctan * arcValue);
     } catch (error) {
         console.error('Calculation error:', error);
         // Handle division by zero or other errors
         const errorInputs = ['sin-result', 'cos-result', 'tan-result', 
-                           'cot-result', 'sec-result', 'cosec-result'];
+                           'cot-result', 'sec-result', 'cosec-result',
+                           'arcsin-result', 'arccos-result', 'arctan-result'];
         errorInputs.forEach(id => {
             document.getElementById(id).value = 'undefined';
         });
