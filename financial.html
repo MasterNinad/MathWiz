@@ -6,7 +6,35 @@
     <title>MathWiz - Financial Calculator</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/nav.js" defer></script>
+    <style>
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            min-height: 400px;
+            width: 100%;
+            overflow-x: auto; /* Allow horizontal scrolling */
+            display: flex;
+            justify-content: center;
+        }
+        .visualization-section {
+            width: 100%;
+            margin: 20px 0;
+            display: none;
+        }
+        .visualization-section.visible {
+            display: block !important;
+        }
+        #compound-interest-chart {
+            width: 100% !important;
+            height: 400px !important;
+            min-width: 500px; /* Lowered minimum width for better responsiveness */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -136,6 +164,12 @@
                                     <button class="btn preset-btn" data-amount="50000">₹50,000</button>
                                     <button class="btn preset-btn" data-amount="100000">₹1,00,000</button>
                                     <button class="btn preset-btn" data-amount="500000">₹5,00,000</button>
+                                </div>
+                            </div>
+
+                            <div class="visualization-section">
+                                <div class="chart-container">
+                                    <canvas id="compound-interest-chart"></canvas>
                                 </div>
                             </div>
 

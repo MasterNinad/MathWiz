@@ -1,3 +1,6 @@
+// Global variable for the chart
+let compoundChart = null;
+
 // Debounce function to limit API calls
 function debounce(func, wait) {
     let timeout;
@@ -124,38 +127,27 @@ function setupFinancialCalculator() {
 
     // Toggle between calculators
     toggleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', function() {
+            const type = this.dataset.type;
             toggleBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const calculatorType = btn.dataset.type;
+            this.classList.add('active');
             
             // Show/hide appropriate inputs
-            if (calculatorType === 'compound') {
+            if (type === 'compound') {
                 compoundInputs.style.display = 'block';
                 roiInputs.forEach(el => el.style.display = 'none');
                 currencyInputs.forEach(el => el.style.display = 'none');
                 simpleCompoundInputs.forEach(el => el.style.display = 'block');
-                updateResultLabels('simple-compound');
-            } else if (calculatorType === 'roi') {
-                compoundInputs.style.display = 'none';
-                roiInputs.forEach(el => el.style.display = 'block');
-                currencyInputs.forEach(el => el.style.display = 'none');
-                simpleCompoundInputs.forEach(el => el.style.display = 'none');
-                updateResultLabels('roi');
-            } else if (calculatorType === 'currency') {
-                compoundInputs.style.display = 'none';
-                roiInputs.forEach(el => el.style.display = 'none');
-                currencyInputs.forEach(el => el.style.display = 'block');
-                simpleCompoundInputs.forEach(el => el.style.display = 'none');
+                document.querySelector('.visualization-section').classList.add('visible');
             } else {
                 compoundInputs.style.display = 'none';
-                roiInputs.forEach(el => el.style.display = 'none');
-                currencyInputs.forEach(el => el.style.display = 'none');
-                simpleCompoundInputs.forEach(el => el.style.display = 'block');
-                updateResultLabels('simple-compound');
+                roiInputs.forEach(el => el.style.display = type === 'roi' ? 'block' : 'none');
+                currencyInputs.forEach(el => el.style.display = type === 'currency' ? 'block' : 'none');
+                simpleCompoundInputs.forEach(el => el.style.display = type === 'simple' ? 'block' : 'none');
+                document.querySelector('.visualization-section').classList.remove('visible');
             }
             
+            // Calculate results after toggle
             calculateResults();
         });
     });
@@ -243,12 +235,11 @@ function calculateROI() {
 
 // Calculate Interest
 function calculateInterest() {
-    // Remove commas and convert to number
     const principal = parseFloat(document.getElementById('principal').value.replace(/,/g, '')) || 0;
     const rate = parseFloat(document.getElementById('rate').value) || 0;
     const time = parseFloat(document.getElementById('time').value) || 0;
     const timeUnit = document.getElementById('time-unit').value;
-    const isCompound = document.querySelector('.toggle-btn.active').dataset.type === 'compound';
+    const calculatorType = document.querySelector('.toggle-btn.active').dataset.type;
     
     let timeInYears = time;
     if (timeUnit === 'months') {
@@ -258,21 +249,197 @@ function calculateInterest() {
     let interest = 0;
     let total = 0;
 
-    if (isCompound) {
+    if (calculatorType === 'compound') {
         const frequency = parseInt(document.getElementById('frequency').value);
-        // Compound Interest: A = P(1 + r/n)^(nt)
         const rateDecimal = rate / 100;
         total = principal * Math.pow(1 + (rateDecimal / frequency), frequency * timeInYears);
         interest = total - principal;
+        
+        // Format and display results
+        document.getElementById('interest-result').value = formatCurrency(interest);
+        document.getElementById('total-result').value = formatCurrency(total);
+        
+        // Show visualization section and update chart
+        const visualizationSection = document.querySelector('.visualization-section');
+        visualizationSection.classList.add('visible');
+        createCompoundInterestChart(principal, rate, timeInYears, frequency);
     } else {
         // Simple Interest: I = P * r * t
         interest = principal * (rate / 100) * timeInYears;
         total = principal + interest;
+        
+        // Hide visualization section
+        document.querySelector('.visualization-section').classList.remove('visible');
+        
+        // Format and display results
+        document.getElementById('interest-result').value = formatCurrency(interest);
+        document.getElementById('total-result').value = formatCurrency(total);
     }
+}
 
-    // Format and display results with Indian number formatting
-    document.getElementById('interest-result').value = formatCurrency(interest);
-    document.getElementById('total-result').value = formatCurrency(total);
+function createCompoundInterestChart(principal, rate, time, frequency) {
+    try {
+        const ctx = document.getElementById('compound-interest-chart');
+        if (!ctx) {
+            console.error('Chart canvas not found');
+            return;
+        }
+
+        // Destroy existing chart if it exists
+        if (compoundChart instanceof Chart) {
+            compoundChart.destroy();
+            compoundChart = null;
+        }
+
+        // Calculate points at smaller intervals for smoother curve
+        const totalPoints = Math.ceil(time * 12); // Monthly points for smooth curve
+        const timePoints = Array.from({length: totalPoints + 1}, (_, i) => i / 12);
+        
+        const balanceData = timePoints.map(t => {
+            // A = P(1 + r/n)^(nt)
+            // where: A = Final amount, P = Principal, r = Interest rate (decimal)
+            // n = Compounding frequency per year, t = Time in years
+            return principal * Math.pow(1 + (rate / (100 * frequency)), frequency * t);
+        });
+
+        // Create year labels (show only yearly points)
+        const labels = timePoints.map(t => {
+            if (t % 1 === 0) return `Year ${t}`;
+            return ''; // Empty label for non-year points
+        }).filter(label => label !== '');
+
+        const principalLine = timePoints.map(() => principal);
+
+        // Create new chart
+        compoundChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timePoints.map(t => t % 1 === 0 ? `Year ${t}` : ''),
+                datasets: [
+                    {
+                        label: 'Balance with Compound Interest',
+                        data: balanceData,
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 0, // Hide points
+                        pointHoverRadius: 6, // Show points on hover
+                        pointHoverBackgroundColor: '#4CAF50',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2
+                    },
+                    {
+                        label: 'Principal Amount',
+                        data: principalLine,
+                        borderColor: '#2196F3',
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0,
+                        pointRadius: 0, // Hide points
+                        pointHoverRadius: 6, // Show points on hover
+                        pointHoverBackgroundColor: '#2196F3',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Compound Interest Growth Over Time',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ₹' + formatIndianNumber(Math.round(context.parsed.y));
+                            },
+                            title: function(context) {
+                                const timePoint = timePoints[context[0].dataIndex];
+                                const years = Math.floor(timePoint);
+                                const months = Math.round((timePoint % 1) * 12);
+                                if (months === 0) {
+                                    return `Year ${years}`;
+                                }
+                                return `Year ${years}, Month ${months}`;
+                            }
+                        },
+                        padding: 10,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#fff',
+                        borderWidth: 1,
+                        displayColors: true,
+                        boxPadding: 3
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '₹' + formatIndianNumber(value);
+                            },
+                            padding: 10
+                        },
+                        title: {
+                            display: true,
+                            text: 'Amount (₹)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            padding: 20
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Time Period',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            padding: 20
+                        },
+                        ticks: {
+                            callback: function(value, index) {
+                                const timePoint = timePoints[index];
+                                return timePoint % 1 === 0 ? `Year ${timePoint}` : '';
+                            },
+                            maxRotation: 0,
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+        console.log('Chart created successfully with frequency:', frequency);
+    } catch (error) {
+        console.error('Error creating chart:', error);
+    }
 }
 
 // Calculate Currency Conversion
