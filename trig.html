@@ -28,7 +28,7 @@
             <section id="trig" class="calculator-section">
                 <h2>Trigonometric Calculator</h2>
                 <div class="calculator-container">
-                    <div class="trig-calc calculator-wrapper">
+                    <div class="trig-calc calculator-wrapper" id="angle-subtype">
                         <div class="angle-input">
                             <div class="unit-toggle">
                                 <label class="switch">
@@ -44,27 +44,27 @@
                             <div class="trig-results">
                                 <div class="result-box">
                                     <label>sin(θ)</label>
-                                    <input type="text" id="sin-result" readonly tabindex="3">
+                                    <input type="text" id="sin-result" tabindex="3">
                                 </div>
                                 <div class="result-box">
                                     <label>cos(θ)</label>
-                                    <input type="text" id="cos-result" readonly tabindex="4">
+                                    <input type="text" id="cos-result" tabindex="4">
                                 </div>
                                 <div class="result-box">
                                     <label>tan(θ)</label>
-                                    <input type="text" id="tan-result" readonly tabindex="5">
+                                    <input type="text" id="tan-result" tabindex="5">
                                 </div>
                                 <div class="result-box">
                                     <label>cot(θ)</label>
-                                    <input type="text" id="cot-result" readonly tabindex="6">
+                                    <input type="text" id="cot-result" tabindex="6">
                                 </div>
                                 <div class="result-box">
                                     <label>sec(θ)</label>
-                                    <input type="text" id="sec-result" readonly tabindex="7">
+                                    <input type="text" id="sec-result" tabindex="7">
                                 </div>
                                 <div class="result-box">
                                     <label>cosec(θ)</label>
-                                    <input type="text" id="cosec-result" readonly tabindex="8">
+                                    <input type="text" id="cosec-result" tabindex="8">
                                 </div>
                                 <div class="result-box">
                                     <label>arcsin(θ)</label>
@@ -106,6 +106,59 @@
                     </div>
                 </div>
             </section>
+
+            <section class="formula-reference">
+                <h3>Trigonometry Formula Reference</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <h4>Basic Ratios</h4>
+                        <div class="formula-item">
+                            <span class="formula-symbol">sin θ = opp/hyp</span>
+                            <span class="formula-description">Sine: opposite over hypotenuse</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">cos θ = adj/hyp</span>
+                            <span class="formula-description">Cosine: adjacent over hypotenuse</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">tan θ = opp/adj</span>
+                            <span class="formula-description">Tangent: opposite over adjacent</span>
+                        </div>
+                    </div>
+
+                    <div class="formula-card">
+                        <h4>Reciprocal Functions</h4>
+                        <div class="formula-item">
+                            <span class="formula-symbol">csc θ = 1/sin θ</span>
+                            <span class="formula-description">Cosecant: reciprocal of sine</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">sec θ = 1/cos θ</span>
+                            <span class="formula-description">Secant: reciprocal of cosine</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">cot θ = 1/tan θ</span>
+                            <span class="formula-description">Cotangent: reciprocal of tangent</span>
+                        </div>
+                    </div>
+
+                    <div class="formula-card">
+                        <h4>Pythagorean Identities</h4>
+                        <div class="formula-item">
+                            <span class="formula-symbol">sin²θ + cos²θ = 1</span>
+                            <span class="formula-description">Basic Pythagorean identity</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">1 + tan²θ = sec²θ</span>
+                            <span class="formula-description">Tangent-Secant identity</span>
+                        </div>
+                        <div class="formula-item">
+                            <span class="formula-symbol">1 + cot²θ = csc²θ</span>
+                            <span class="formula-description">Cotangent-Cosecant identity</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer>
@@ -113,6 +166,7 @@
         </footer>
     </div>
 
+    <script src="js/nav.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/trig.js"></script>
 </body>
