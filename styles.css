@@ -1592,6 +1592,60 @@ footer {
     }
 }
 
+/* Vector Component Styles */
+.vector-components {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-md);
+}
+
+.vector-component {
+    background: var(--white);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.vector-component label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    font-size: 1.1rem;
+}
+
+.vector-component input {
+    width: 100%;
+    padding: var(--space-md);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.vector-component input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .vector-components {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .vector-component {
+        padding: var(--space-sm);
+    }
+
+    .vector-component input {
+        padding: var(--space-sm);
+    }
+}
+
 /* Unit Circle Styles */
 .trig-content {
     display: flex;
@@ -1983,70 +2037,125 @@ footer {
 
 /* Formula Reference Styles */
 .formula-reference {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
     background: var(--white);
     border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    margin: var(--space-lg) 0;
     box-shadow: var(--shadow-md);
 }
 
 .formula-reference h3 {
     color: var(--primary);
-    margin-bottom: var(--space-md);
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--primary-light);
 }
 
-.formula-grid {
+.formula-reference-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-md);
-}
-
-.formula-card {
-    background: var(--bg-light);
-    padding: var(--space-md);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-}
-
-.formula-card h4 {
-    color: var(--secondary);
-    margin-bottom: var(--space-sm);
-    font-size: 1.1rem;
+    gap: var(--space-lg);
 }
 
 .formula-item {
-    margin: var(--space-xs) 0;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+    padding: var(--space-lg);
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
 }
 
-.formula-symbol {
-    font-family: 'Times New Roman', serif;
-    font-style: italic;
-    min-width: 100px;
+.formula-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
 }
 
-.formula-description {
+.formula-item h4 {
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+}
+
+.formula-item p {
     color: var(--text-dark);
-    opacity: 0.9;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+    line-height: 1.6;
+}
+
+.formula-item .description {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-top: var(--space-sm);
+}
+
+/* Variables section within formula reference */
+.variables-list {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border);
+}
+
+.variables-list h5 {
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin-bottom: var(--space-sm);
+}
+
+.variable-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+}
+
+.variable-symbol {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 2rem;
+}
+
+.variable-description {
+    color: var(--text);
     font-size: 0.95rem;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .formula-grid {
-        grid-template-columns: 1fr;
+    .formula-reference {
+        padding: var(--space-md);
+        margin-top: var(--space-lg);
     }
-    
+
+    .formula-reference h3 {
+        font-size: 1.3rem;
+        margin-bottom: var(--space-md);
+    }
+
     .formula-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-xs);
+        padding: var(--space-md);
     }
-    
-    .formula-symbol {
-        min-width: auto;
+
+    .formula-item h4 {
+        font-size: 1.1rem;
+    }
+
+    .formula-item p {
+        font-size: 1rem;
+    }
+
+    .formula-item .description {
+        font-size: 0.9rem;
+    }
+
+    .variables-list h5 {
+        font-size: 0.95rem;
+    }
+
+    .variable-description {
+        font-size: 0.9rem;
     }
 }
 
@@ -2062,7 +2171,6 @@ footer {
     padding: var(--space-sm) var(--space-lg);
     background: var(--bg-light);
     border: 2px solid var(--primary);
-    border-radius: var(--radius-md);
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
@@ -2192,5 +2300,364 @@ footer {
 
     .numbers-list {
         max-height: 4rem;
+    }
+}
+
+/* Physics Calculator Styles */
+.physics-calc {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-xl) calc(var(--space-xl) * 1.5);
+    box-shadow: var(--shadow-md);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.calculator-type-toggle {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+}
+
+.toggle-btn {
+    padding: var(--space-md) var(--space-xl);
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-dark);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    min-width: 180px;
+    font-size: 1.1rem;
+}
+
+.toggle-btn:hover {
+    background: var(--primary-light);
+    color: var(--white);
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.toggle-btn.active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.calculator-inputs {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+}
+
+.calculator-inputs h3 {
+    color: var(--primary);
+    margin-bottom: var(--space-md);
+    font-size: 1.2rem;
+}
+
+.vector-components {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.input-wrapper label {
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+}
+
+.input-wrapper input {
+    padding: var(--space-md);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.input-wrapper input::placeholder {
+    color: #999;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin: var(--space-xl) 0;
+    justify-content: center;
+    padding: var(--space-lg);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.button-group button {
+    padding: var(--space-md) var(--space-xl);
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    min-width: 160px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.button-group button:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.result-section {
+    margin-top: var(--space-xl);
+    padding: var(--space-xl);
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.result-section h3 {
+    color: var(--primary);
+    margin-bottom: var(--space-lg);
+    font-weight: 600;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.result-display {
+    font-family: 'Courier New', monospace;
+    line-height: 1.8;
+    padding: var(--space-lg);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    font-size: 1.1rem;
+}
+
+.formula-reference {
+    margin-top: calc(var(--space-xl) * 2);
+    padding: calc(var(--space-xl) * 1.5);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.formula-reference h3 {
+    text-align: center;
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: var(--space-xl);
+}
+
+.formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+}
+
+.formula-card {
+    padding: var(--space-xl);
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+    border: 1px solid var(--border);
+}
+
+.formula-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.formula-card h4 {
+    color: var(--primary);
+    margin-bottom: var(--space-lg);
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.formula-card p {
+    margin: var(--space-xs) 0;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.formula-card strong {
+    font-family: 'Courier New', monospace;
+    background: rgba(67, 97, 238, 0.1);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    color: var(--primary);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .physics-calc {
+        padding: var(--space-lg);
+        margin: var(--space-sm);
+    }
+
+    .calculator-type-toggle {
+        padding: var(--space-sm);
+        gap: var(--space-sm);
+    }
+
+    .toggle-btn {
+        min-width: 140px;
+        padding: var(--space-sm) var(--space-md);
+        font-size: 1rem;
+    }
+
+    .vector-components {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .button-group {
+        padding: var(--space-md);
+        gap: var(--space-sm);
+    }
+
+    .button-group button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .formula-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .formula-card {
+        padding: var(--space-lg);
+    }
+
+    .result-section {
+        padding: var(--space-lg);
+    }
+
+    .input-wrapper input {
+        padding: var(--space-sm);
+        font-size: 1rem;
+    }
+}
+
+/* Additional spacing for better hierarchy */
+.calculator-section {
+    padding: var(--space-xl) 0;
+}
+
+.calculator-section h2 {
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 1.8rem;
+    margin-bottom: var(--space-xl);
+}
+
+/* Physics Calculator Input Groups */
+.calculator-inputs .input-group {
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.calculator-inputs .input-group h3 {
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--primary-light);
+}
+
+/* Linear and Projectile Motion specific styles */
+.linear-inputs .input-group,
+.projectile-inputs .input-group {
+    margin-bottom: var(--space-lg);
+}
+
+.linear-inputs .input-group label,
+.projectile-inputs .input-group label {
+    display: block;
+    font-weight: 500;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+    font-size: 1.1rem;
+}
+
+.linear-inputs .input-group input,
+.projectile-inputs .input-group input {
+    width: 100%;
+    padding: var(--space-md);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+}
+
+/* Vector Calculator specific styles */
+.vector-inputs .input-group {
+    margin-bottom: var(--space-xl);
+}
+
+.vector-inputs .input-group h3 {
+    text-align: left;
+    padding-left: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calculator-inputs .input-group {
+        padding: var(--space-md);
+        margin-bottom: var(--space-md);
+    }
+
+    .calculator-inputs .input-group h3 {
+        font-size: 1.1rem;
+        margin-bottom: var(--space-md);
+    }
+
+    .linear-inputs .input-group label,
+    .projectile-inputs .input-group label {
+        font-size: 1rem;
+    }
+
+    .linear-inputs .input-group input,
+    .projectile-inputs .input-group input {
+        padding: var(--space-sm);
+        font-size: 1rem;
     }
 }
