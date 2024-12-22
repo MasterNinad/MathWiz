@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Set active nav link based on current page
+    const currentPath = window.location.pathname;
+    const currentPage = currentPath.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
     // Prevent clicks on nav links from bubbling up
     navLinks.addEventListener('click', function(e) {
         if (e.target.classList.contains('nav-link')) {
